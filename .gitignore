@@ -3,9 +3,3 @@ venv/
 *.pdf
 *.zip
 *.ipynb_checkpoints
-Unit*/*
-!Unit*/Assignment*
-Unit*/Assignment*/img
-Unit*/*.zip
-.Rproj.user
-.Rhistory
