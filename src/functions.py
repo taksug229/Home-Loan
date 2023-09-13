@@ -1,0 +1,48 @@
+import pandas as pd
+from typing import List
+
+
+def data_imputation(
+    df: pd.Dataframe,
+    TARGET_F: str = "TARGET_BAD_FLAG",
+    TARGET_A: str = "TARGET_LOSS_AMT",
+    objcols: List[str] = ["REASON", "JOB"],
+) -> pd.DataFrame:
+    data = df.copy()
+    targetcols = [TARGET_F, TARGET_A]
+    mask_numcols = ~data.columns.isin(objcols)
+    numcols = data.columns[mask_numcols]
+    for col in objcols:
+        data.loc[data[col].isna(), col] = "Unknown"
+    for col in numcols:
+        if col in targetcols or data[col].isna().sum() == 0:
+            continue
+        FLAG = f"M_{col}"
+        IMPUTED = f"IMP_{col}"
+        data[FLAG] = data[col].isna().astype(int)
+        data[IMPUTED] = data[col].fillna(
+            data.groupby(objcols, dropna=False)[col].transform("median")
+        )
+        data = data.drop(col, axis=1)
+    return data
+
+
+def data_dummy(
+    df: pd.DataFrame,
+    objcols: List[str] = ["REASON", "JOB"],
+) -> pd.DataFrame:
+    data = df.copy()
+    for col in objcols:
+        thePrefix = "z_" + col
+        y = pd.get_dummies(data[col], prefix=thePrefix, drop_first=False)
+        y = y.drop(y.columns[-1], axis=1).astype(int)
+        data = pd.concat([data, y], axis=1)
+        data = data.drop(col, axis=1)
+    return data
+
+
+def data_cap(df: pd.DataFrame, TARGET_A: str = "TARGET_LOSS_AMT", cap: int = 25_000):
+    data = df.copy()
+    cap_limit = data[TARGET_A] > cap
+    data.loc[cap_limit, TARGET_A] = cap
+    return
