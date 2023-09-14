@@ -3,3 +3,4 @@ venv/
 *.pdf
 *.zip
 *.ipynb_checkpoints
+__pycache__

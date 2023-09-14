@@ -1,221 +1,207 @@
 import os
+import sys
+import logging
+from io import StringIO
+from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-# Full path of the directory of this Python file
-path = os.path.dirname(os.path.realpath(__file__))
-log_file_path = path + "/" + "analysis_log.txt"
-df = pd.read_csv(path + "/" + "HMEQ_LOSS.csv")
-targetcols = ["TARGET_BAD_FLAG", "TARGET_LOSS_AMT"]
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from src.functions import data_imputation, data_dummy, data_cap, save_graph
+
+current_dir = os.path.dirname(os.path.realpath(__file__))
+base_file_name = os.path.splitext(os.path.basename(__file__))[0]
+path = os.path.abspath(os.path.join(current_dir, os.pardir))
+
+log_path = path + f"/logs/"
+os.makedirs(log_path, exist_ok=True)
+
+# Create logs
+current_datetime = datetime.now()
+formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+log_file_path = log_path + f"{base_file_name}-{formatted_datetime}.log"
+logging.basicConfig(
+    level=logging.INFO,
+    filename=log_file_path,
+    filemode="w",
+    format="%(asctime)s - %(levelname)s: %(message)s",
+)
+logger = logging.getLogger()
+
+data_path = path + "/data/"
+df = pd.read_csv(data_path + "HMEQ_LOSS.csv")
+TARGET_F = "TARGET_BAD_FLAG"
+TARGET_A = "TARGET_LOSS_AMT"
+targetcols = [TARGET_F, TARGET_A]
 objcols = ["REASON", "JOB"]
 mask_numcols = ~df.columns.isin(objcols)
 numcols = df.columns[mask_numcols]
 
-
-def dfmethod_to_text_save(dfmethod, f):
-    """Save Pandas dataframe methods to log file.
-
-    Args:
-        dfmethod (None): Pandas dataframe methods.
-        f (TextIOWrapper): File to save log file.
-    """
-    txt = dfmethod.to_string()
-    f.write(txt)
-    f.write("\n")
-    f.write("\n")
-
-
-def save_graph(df, x, y, hue, title, save_img_path):
-    """_summary_
-
-    Args:
-        df (pd.DataFrame): Dataframe used for plotting.
-        x (str): x variable column for barplot.
-        y (str): y variable column for barplot.
-        hue (str): hue variable column for barplot.
-        save_img_path (str): image save path.
-    """
-    fig, ax = plt.subplots()
-    a = sns.barplot(ax=ax, x=x, y=y, hue=hue, data=df)
-    a.set(title=title)
-    a.grid(axis="y")
-    fig.savefig(save_img_path)
-
-
 # ------- Data Exploration -------
-with open(log_file_path, "w") as f:
-    f.write("Info\n")
-    df.info(buf=f)
-    f.write("\n")
+logger.info("Info")
+info_output_buffer = StringIO()
+df.info(buf=info_output_buffer)
+info_output_str = info_output_buffer.getvalue()
+logger.info(info_output_str)
 
-    f.write("Describe\n")
-    dfmethod_to_text_save(df.describe().T, f)
+logger.info("Describe")
+desc = df.describe().T.to_string()
+logger.info(f"\n{desc}")
 
-    f.write("Value Counts\n")
-    for col in objcols:
-        dfmethod_to_text_save(df[col].value_counts(dropna=False), f)
+logger.info("Value Counts")
+for col in objcols:
+    vc = df[col].value_counts(dropna=False).to_string()
+    logger.info(f"\n{vc}")
 
-    f.write("Kurtosis\n")
-    dfmethod_to_text_save(df[numcols].kurtosis(), f)
-    f.write("Skewness\n")
-    dfmethod_to_text_save(df[numcols].skew(), f)
+logger.info("Kurtosis")
+ku = df[numcols].kurtosis()
+logger.info(f"\n{ku}")
+logger.info("Skewness")
+sk = df[numcols].skew()
+logger.info(f"\n{sk}")
 
-    f.write("Describe grouped by each category\n")
-    for col in objcols:
-        for numcol in numcols:
-            f.write(f"{col}: {numcol}\n")
-            dfmethod_to_text_save(df.groupby(col, dropna=False)[numcol].describe().T, f)
-    f.write("\n")
-
-    f.write("Describe grouped by both categories\n")
+logger.info("Describe grouped by each category")
+for col in objcols:
     for numcol in numcols:
-        f.write(f"{objcols}: {numcol}\n")
-        dfmethod_to_text_save(df.groupby(objcols, dropna=False)[numcol].describe().T, f)
-    f.write("\n")
+        logger.info(f"{col}: {numcol}")
+        gdesc = df.groupby(col, dropna=False)[numcol].describe().T.to_string()
+        logger.info(f"\n{gdesc}")
 
-    f.write("Save distribution figure of numerical variables.\n")
-    img_path = path + "/" + "img/"
-    os.makedirs(img_path, exist_ok=True)
-    df.hist(bins=20, figsize=(12, 14))
-    fig_save_path = img_path + "distribution_num_variables.png"
-    plt.savefig(fig_save_path)
-    f.write(f"Distribution figure save location: {fig_save_path}\n")
+logger.info("Describe grouped by both categories")
+for numcol in numcols:
+    logger.info(f"{objcols}: {numcol}")
+    gbdesc = df.groupby(objcols, dropna=False)[numcol].describe().T.to_string()
+    logger.info(f"\n{gbdesc}")
 
-    f.write(
-        "Save barchart of the average default rate and loss amount by job and reason of loan.\n"
-    )
-    for tcol in targetcols:
-        temp_df = df.groupby(objcols).agg(mean=(tcol, "mean")).reset_index()
-        save_img_path = img_path + f"barchart_{tcol}.png"
-        save_graph(
-            df=temp_df,
-            x="JOB",
-            y="mean",
-            hue="REASON",
-            title=tcol,
-            save_img_path=save_img_path,
-        )
-        f.write(f"Saved figure to {save_img_path}\n")
-    f.write("\n")
-    f.write("Expected value for default considering default rate and loss amount\n")
-    expected_df = (
-        df.groupby(objcols)
-        .agg(
-            default_mean=("TARGET_BAD_FLAG", "mean"),
-            loss_mean=("TARGET_LOSS_AMT", "mean"),
-        )
-        .reset_index()
-    )
-    expected_df["expected_loss_amount"] = (
-        expected_df["default_mean"] * expected_df["loss_mean"]
-    )
-    yloss = "expected_loss_amount"
-    save_img_path_exploss = img_path + f"barchart_{yloss}.png"
+logger.info("Save distribution figure of numerical variables.")
+img_path = path + f"/img/{base_file_name}/"
+os.makedirs(img_path, exist_ok=True)
+df.hist(bins=20, figsize=(12, 14))
+fig_save_path = img_path + "distribution_num_variables.png"
+plt.savefig(fig_save_path)
+logger.info(f"Distribution figure save location: {fig_save_path}")
+
+logger.info(
+    "Save barchart of the average default rate and loss amount by job and reason of loan."
+)
+for tcol in targetcols:
+    temp_df = df.groupby(objcols).agg(mean=(tcol, "mean")).reset_index()
+    save_img_path = img_path + f"barchart_{tcol}.png"
     save_graph(
-        df=expected_df,
+        df=temp_df,
         x="JOB",
-        y=yloss,
+        y="mean",
         hue="REASON",
-        title=yloss,
-        save_img_path=save_img_path_exploss,
+        title=tcol,
+        save_img_path=save_img_path,
     )
-    f.write(f"Saved figure to {save_img_path_exploss}\n")
-    f.write("\n")
-
-    f.write("Counts of the observation for each job and loan type.\n")
-    count_df = df.groupby(objcols).size().reset_index()
-    count_df = count_df.rename(columns={0: "Observations"})
-    yobs = "Observations"
-    save_img_path_obs = img_path + f"barchart_{yobs}.png"
-    save_graph(
-        df=count_df,
-        x="JOB",
-        y=yobs,
-        hue="REASON",
-        title=yobs,
-        save_img_path=save_img_path_obs,
+    logger.info(f"Saved figure to {save_img_path}")
+logger.info("")
+logger.info("Expected value for default considering default rate and loss amount")
+expected_df = (
+    df.groupby(objcols)
+    .agg(
+        default_mean=(TARGET_F, "mean"),
+        loss_mean=(TARGET_A, "mean"),
     )
-    f.write(f"Saved figure to {save_img_path_obs}\n")
-    f.write("\n")
+    .reset_index()
+)
+expected_df["expected_loss_amount"] = (
+    expected_df["default_mean"] * expected_df["loss_mean"]
+)
+yloss = "expected_loss_amount"
+save_img_path_exploss = img_path + f"barchart_{yloss}.png"
+save_graph(
+    df=expected_df,
+    x="JOB",
+    y=yloss,
+    hue="REASON",
+    title=yloss,
+    save_img_path=save_img_path_exploss,
+)
+logger.info(f"Saved figure to {save_img_path_exploss}")
 
-    f.write("Correlation for bad flag.\n")
-    dfmethod_to_text_save(
-        df[numcols]
-        .corr()["TARGET_BAD_FLAG"]
-        .reset_index()
-        .sort_values("TARGET_BAD_FLAG", ascending=False)
-        .query("TARGET_BAD_FLAG < 1 "),
-        f,
-    )
+logger.info("Counts of the observation for each job and loan type.")
+count_df = df.groupby(objcols).size().reset_index()
+count_df = count_df.rename(columns={0: "Observations"})
+yobs = "Observations"
+save_img_path_obs = img_path + f"barchart_{yobs}.png"
+save_graph(
+    df=count_df,
+    x="JOB",
+    y=yobs,
+    hue="REASON",
+    title=yobs,
+    save_img_path=save_img_path_obs,
+)
+logger.info(f"Saved figure to {save_img_path_obs}")
 
-    f.write("Correlation for bad flag grouped by job and reason for loan.\n")
-    dfmethod_to_text_save(
-        df.groupby(objcols)[numcols]
-        .corr()["TARGET_BAD_FLAG"]
-        .reset_index()
-        .sort_values("TARGET_BAD_FLAG", ascending=False)
-        .query("TARGET_BAD_FLAG < 1 "),
-        f,
-    )
+logger.info("Correlation for bad flag.")
+cobf = (
+    df[numcols]
+    .corr()[TARGET_F]
+    .reset_index()
+    .sort_values(TARGET_F, ascending=False)
+    .query("TARGET_BAD_FLAG < 1 ")
+    .to_string()
+)
+logger.info(f"\n{cobf}")
 
-    # ------- Impute Missing Values -------
+logger.info("Correlation for bad flag grouped by job and reason for loan.")
+cobfjr = (
+    df.groupby(objcols)[numcols]
+    .corr()[TARGET_F]
+    .reset_index()
+    .sort_values(TARGET_F, ascending=False)
+    .query("TARGET_BAD_FLAG < 1 ")
+    .to_string()
+)
+logger.info(f"\n{cobfjr}")
 
-    f.write("Total NaN values in each row.\n")
-    f.write(
-        "NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default.\n"
-    )
-    dfmethod_to_text_save(df.isna().sum(), f)
+# ------- Impute Missing Values -------
+# logger.info("Total NaN values in each row.")
+# logger.info(
+#     "NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default."
+# )
+# nasumb = df.isna().sum().to_string()
+# logger.info(f"\n{nasumb}")
 
-    f.write(
-        "Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values.\n"
-    )
-    dfmethod_to_text_save(df.groupby(objcols, dropna=False)[numcols].median(), f)
+# logger.info(
+#     "Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values."
+# )
+# gbimp = df.groupby(objcols, dropna=False)[numcols].median().to_string()
+# logger.info(f"\n{gbimp}")
 
-    f.write("Impute missing values START.\n")
-    f.write("Impute missing categorical values to 'Unknwon'.\n")
-    for col in objcols:
-        df.loc[df[col].isna(), col] = "Unknown"
+# logger.info("Impute missing values START.")
+# logger.info("Impute missing categorical values to 'Unknwon'.")
+# logger.info("Add new column for flag and imputed numbers.")
+# logger.info("The NaNs will be imputed by the median of per Job and Reason.")
+# logger.info("The original imputed columns will be deleted.")
+# df = data_imputation(df=df, TARGET_F=TARGET_F, TARGET_A=TARGET_A, objcols=objcols)
+# logger.info("Impute missing values END.")
+# logger.info("First 5 observations of the imputed data")
+# head = df.head().T.to_string()
+# logger.info(f"\n{head}")
+# logger.info(
+#     "Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)"
+# )
+# nasuma = df.isna().sum().to_string()
+# logger.info(f"\n{nasuma}")
 
-    f.write("Add new column for flag and imputed numbers.\n")
-    f.write("The NaNs will be imputed by the median of per Job and Reason.\n")
-    f.write("The original imputed columns will be deleted.\n")
-    for col in numcols:
-        if col in targetcols or df[col].isna().sum() == 0:
-            continue
-        FLAG = f"M_{col}"
-        IMPUTED = f"IMP_{col}"
-        df[FLAG] = df[col].isna().astype(int)
-        df[IMPUTED] = df[col].fillna(
-            df.groupby(objcols, dropna=False)[col].transform("median")
-        )
-        df = df.drop(col, axis=1)
-    f.write("Impute missing values END.\n")
-    f.write("\n")
-    f.write("First 5 observations of the imputed data\n")
-    dfmethod_to_text_save(df.head().T, f)
-    f.write(
-        "Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)\n"
-    )
-    dfmethod_to_text_save(df.isna().sum(), f)
+# ------- Create dummy variables -------
+# logger.info("Creating dummy variables for categorical columns")
+# df = data_dummy(df=df, objcols=objcols)
+# logger.info("Completed creating dummy variables")
+# logger.info("First 5 observations of the data with dummy variables")
+# headdum = df.head().to_string()
+# logger.info(f"\n{headdum}")
 
-    # ------- Create dummy variables -------
-    f.write("Creating dummy variables for categorical columns\n")
-    for col in objcols:
-        thePrefix = "z_" + col
-        y = pd.get_dummies(df[col], prefix=thePrefix, drop_first=False)
-        y = y.drop(y.columns[-1], axis=1).astype(int)
-        df = pd.concat([df, y], axis=1)
-        df = df.drop(col, axis=1)
-    f.write("Completed creating dummy variables.\n")
-    f.write("First 5 observations of the data with dummy variables\n")
-    dfmethod_to_text_save(df.head(), f)
-    f.write("Saving data\n")
-    save_csv_path = path + "/" + "NEW_HMEQ_LOSS.csv"
-    df.to_csv(save_csv_path, index=False)
-    f.write("Completed\n")
-    f.close()
-    print("Completed!\n")
-    print(f"Saved graph images to {img_path}")
-    print(f"Saved processed csv to {save_csv_path}")
-    print(f"Saved logs for analysis to {log_file_path}")
+# logger.info("Saving data")
+# save_csv_path = path + "/" + "NEW_HMEQ_LOSS.csv"
+# df.to_csv(save_csv_path, index=False)
+logger.info("Completed")
+
+print("Completed!")
+print(f"Saved graph images to {img_path}")
+# print(f"Saved processed csv to {save_csv_path}")
+print(f"Saved logs for analysis to {log_file_path}")
