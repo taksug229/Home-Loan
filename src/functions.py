@@ -2,6 +2,7 @@ import pandas as pd
 from typing import List
 import matplotlib.pyplot as plt
 import seaborn as sns
+import logging
 
 
 def data_imputation(
@@ -48,6 +49,60 @@ def data_cap(df: pd.DataFrame, TARGET_A: str = "TARGET_LOSS_AMT", cap: int = 25_
     cap_limit = data[TARGET_A] > cap
     data.loc[cap_limit, TARGET_A] = cap
     return
+
+
+def preprocess_data_with_log(
+    df: pd.DataFrame,
+    logger: logging.RootLogger,
+    objcols: List[str],
+    numcols: List[str],
+    TARGET_F: str = "TARGET_BAD_FLAG",
+    TARGET_A: str = "TARGET_LOSS_AMT",
+):
+    data = df.copy()
+    logger.info("Total NaN values in each row.")
+    logger.info(
+        "NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default."
+    )
+    nasumb = data.isna().sum().to_string()
+    logger.info(f"\n{nasumb}")
+    logger.info(
+        "Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values."
+    )
+    gbimp = data.groupby(objcols, dropna=False)[numcols].median().to_string()
+    logger.info(f"\n{gbimp}")
+
+    # ------- Impute Missing Values -------
+    logger.info("Impute missing values START.")
+    logger.info("Impute missing categorical values to 'Unknwon'.")
+    logger.info("Add new column for flag and imputed numbers.")
+    logger.info("The NaNs will be imputed by the median of per Job and Reason.")
+    logger.info("The original imputed columns will be deleted.")
+    data = data_imputation(
+        df=data, TARGET_F=TARGET_F, TARGET_A=TARGET_A, objcols=objcols
+    )
+    logger.info("Impute missing values END.")
+    logger.info("First 5 observations of the imputed data")
+    head = df.head().T.to_string()
+    logger.info(f"\n{head}")
+    logger.info(
+        "Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)"
+    )
+    nasuma = data.isna().sum().to_string()
+    logger.info(f"\n{nasuma}")
+
+    # ------- Create dummy variables -------
+    logger.info("Creating dummy variables for categorical columns")
+    data = data_dummy(df=data, objcols=objcols)
+    logger.info("Completed creating dummy variables")
+    logger.info("First 5 observations of the data with dummy variables")
+    headdum = data.head().to_string()
+    logger.info(f"\n{headdum}")
+    return data
+
+    # logger.info("Saving data")
+    # save_csv_path = path + "/" + "NEW_HMEQ_LOSS.csv"
+    # df.to_csv(save_csv_path, index=False)
 
 
 def save_graph(
