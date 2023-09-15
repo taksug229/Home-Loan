@@ -11,6 +11,18 @@ def data_imputation(
     TARGET_A: str = "TARGET_LOSS_AMT",
     objcols: List[str] = ["REASON", "JOB"],
 ) -> pd.DataFrame:
+    """
+    Impute missing values in a DataFrame.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        TARGET_F (str, optional): The name of the binary target column. Defaults to "TARGET_BAD_FLAG".
+        TARGET_A (str, optional): The name of the numeric target column. Defaults to "TARGET_LOSS_AMT".
+        objcols (List[str], optional): A list of categorical column names. Defaults to ["REASON", "JOB"].
+
+    Returns:
+        pd.DataFrame: The DataFrame with missing values imputed.
+    """
     data = df.copy()
     targetcols = [TARGET_F, TARGET_A]
     mask_numcols = ~data.columns.isin(objcols)
@@ -34,6 +46,16 @@ def data_dummy(
     df: pd.DataFrame,
     objcols: List[str] = ["REASON", "JOB"],
 ) -> pd.DataFrame:
+    """
+    Create dummy variables for categorical columns in a DataFrame.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        objcols (List[str], optional): A list of categorical column names. Defaults to ["REASON", "JOB"].
+
+    Returns:
+        pd.DataFrame: The DataFrame with dummy variables created.
+    """
     data = df.copy()
     for col in objcols:
         thePrefix = "z_" + col
@@ -44,11 +66,24 @@ def data_dummy(
     return data
 
 
-def data_cap(df: pd.DataFrame, TARGET_A: str = "TARGET_LOSS_AMT", cap: int = 25_000):
+def data_cap(
+    df: pd.DataFrame, TARGET_A: str = "TARGET_LOSS_AMT", cap: int = 25_000
+) -> pd.DataFrame:
+    """
+    Cap values in a specific column of a DataFrame.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        TARGET_A (str, optional): The name of the target column to be capped. Defaults to "TARGET_LOSS_AMT".
+        cap (int, optional): The value to which the target column values will be capped. Defaults to 25,000.
+
+    Returns:
+        pd.DataFrame: The DataFrame with capped values.
+    """
     data = df.copy()
     cap_limit = data[TARGET_A] > cap
     data.loc[cap_limit, TARGET_A] = cap
-    return
+    return data
 
 
 def preprocess_data_with_log(
@@ -58,7 +93,21 @@ def preprocess_data_with_log(
     numcols: List[str],
     TARGET_F: str = "TARGET_BAD_FLAG",
     TARGET_A: str = "TARGET_LOSS_AMT",
-):
+) -> pd.DataFrame:
+    """
+    Preprocess data with logging.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        logger (logging.RootLogger): The logger object for logging.
+        objcols (List[str]): A list of categorical column names.
+        numcols (List[str]): A list of numerical column names.
+        TARGET_F (str, optional): The name of the binary target column. Defaults to "TARGET_BAD_FLAG".
+        TARGET_A (str, optional): The name of the numeric target column. Defaults to "TARGET_LOSS_AMT".
+
+    Returns:
+        pd.DataFrame: The preprocessed DataFrame.
+    """
     data = df.copy()
     logger.info("Total NaN values in each row.")
     logger.info(
