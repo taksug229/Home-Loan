@@ -5,6 +5,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from src.config import (
+    TARGET_F,
+    TARGET_A,
+    targetcols,
+    objcols,
+    numcols,
+)
 from src.functions import save_graph
 from src.log_functions import build_logger, get_log_file_name, log_execution_time
 
@@ -13,6 +20,8 @@ base_file_name = os.path.splitext(os.path.basename(__file__))[0]
 path = os.path.abspath(os.path.join(current_dir, os.pardir))
 
 log_path = path + f"/logs/"
+img_path = path + f"/img/{base_file_name}/"
+os.makedirs(img_path, exist_ok=True)
 os.makedirs(log_path, exist_ok=True)
 
 # Create logs
@@ -23,12 +32,6 @@ logger = build_logger(log_file_path)
 # Read data
 data_path = path + "/data/"
 df = pd.read_csv(data_path + "HMEQ_LOSS.csv")
-TARGET_F = "TARGET_BAD_FLAG"
-TARGET_A = "TARGET_LOSS_AMT"
-targetcols = [TARGET_F, TARGET_A]
-objcols = ["REASON", "JOB"]
-mask_numcols = ~df.columns.isin(objcols)
-numcols = df.columns[mask_numcols]
 
 
 # ------- Data Exploration -------
@@ -70,8 +73,6 @@ def main():
         logger.info(f"\n{gbdesc}")
 
     logger.info("Save distribution figure of numerical variables.")
-    img_path = path + f"/img/{base_file_name}/"
-    os.makedirs(img_path, exist_ok=True)
     df.hist(bins=20, figsize=(12, 14))
     fig_save_path = img_path + "distribution_num_variables.png"
     plt.savefig(fig_save_path)
