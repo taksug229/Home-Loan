@@ -166,10 +166,6 @@ def preprocess_data_with_log(
     data = data_cap(df=data, TARGET_A=TARGET_A)
     return data
 
-    # logger.info("Saving data")
-    # save_csv_path = path + "/" + "NEW_HMEQ_LOSS.csv"
-    # df.to_csv(save_csv_path, index=False)
-
 
 def save_graph(
     df: pd.DataFrame, x: str, y: str, hue: str, title: str, save_img_path: str
@@ -199,7 +195,37 @@ def split_data(
     TARGET_F: str = TARGET_F,
     TARGET_A: str = TARGET_A,
     random_state: int = random_state,
-) -> Tuple[pd.DataFrame]:
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+    pd.DataFrame,
+]:
+    """
+    Split the input DataFrame into training and test sets for two target columns.
+
+    Args:
+        df (pd.DataFrame): The input DataFrame containing the data.
+        logger (logging.RootLogger): The logger object for logging information.
+        TARGET_F (str, optional): The name of the first target column. Defaults to TARGET_F from config file.
+        TARGET_A (str, optional): The name of the second target column. Defaults to TARGET_A from config file.
+        random_state (int, optional): Random seed for reproducibility. random_state from config file.
+
+    Returns:
+        Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+            - X_train (pd.DataFrame): Features for training.
+            - X_test (pd.DataFrame): Features for testing.
+            - Y_train (pd.DataFrame): Both target columns for training.
+            - Y_test (pd.DataFrame): Both target columns for testing.
+            - XA_train (pd.DataFrame): Features for training (filtered by the presence of TARGET_A).
+            - XA_test (pd.DataFrame): Features for testing (filtered by the presence of TARGET_A).
+            - YA_train (pd.DataFrame): Both target columns for training (filtered by the presence of TARGET_A).
+            - YA_test (pd.DataFrame): Both target columns for testing (filtered by the presence of TARGET_A).
+    """
     logger.info("Data Split")
     X = df.copy()
     X = X.drop([TARGET_F, TARGET_A], axis=1)
