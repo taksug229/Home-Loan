@@ -1,9 +1,7 @@
 import os
 import sys
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import (
     RandomForestRegressor,
     RandomForestClassifier,
@@ -51,22 +49,20 @@ log_file_name = get_log_file_name(base_file_name + "-")
 log_file_path = log_path + log_file_name
 logger = build_logger(log_file_path)
 
-# -------- Reading data, prerpocessing, splitting data. ----------
-
-data_path = path + "/data/"
-df = pd.read_csv(data_path + "HMEQ_LOSS.csv")
-df = preprocess_data_with_log(
-    df=df,
-    logger=logger,
-    objcols=objcols,
-    numcols=numcols,
-    targetcols=targetcols,
-    TARGET_A=TARGET_A,
-)
-
 
 @log_execution_time(logger=logger)
 def main():
+    # -------- Reading data, prerpocessing, splitting data. ----------
+    data_path = path + "/data/"
+    df = pd.read_csv(data_path + "HMEQ_LOSS.csv")
+    df = preprocess_data_with_log(
+        df=df,
+        logger=logger,
+        objcols=objcols,
+        numcols=numcols,
+        targetcols=targetcols,
+        TARGET_A=TARGET_A,
+    )
     logger.info("LOSS AMOUNT statistics after preprocessing")
     logger.info(f"\n{df[TARGET_A].describe().to_string()}")
 

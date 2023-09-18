@@ -20,12 +20,12 @@ numcols = [
 ]
 figsize = (6, 4)
 
-# -------- ML Settings --------
+# -------- Main Settings --------
 random_state = 1  # Data split random_state
 cv = 5  # Cross Validation K Folds
-
-# -------- Default Parameters --------
 max_depth = 3  # Depth size for tree
+feature_thresh = 0.05  # Feature importance threshold for tree models
+max_step_wise_vars = 10  # Max step wise variables
 
 # -------- Grid Search Parameters --------
 UseGridSearch = False  # If True, Grid search parameters will be used. If False, Default Parameters will be used.

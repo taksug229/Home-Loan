@@ -6,6 +6,10 @@ from typing import List, Tuple
 import matplotlib.pyplot as plt
 import seaborn as sns
 import logging
+from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
+from sklearn.base import BaseEstimator
+from sklearn.utils._testing import ignore_warnings
+from sklearn.exceptions import ConvergenceWarning
 from sklearn.model_selection import cross_val_score, GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score, roc_curve, auc, mean_squared_error
 
@@ -16,8 +20,12 @@ from src.config import (
     targetcols,
     objcols,
     numcols,
+    figsize,
     random_state,
+    cv,
     max_depth,
+    feature_thresh,
+    max_step_wise_vars,
     grid_search_dic,
 )
 
@@ -269,7 +277,7 @@ def process_model(
     isCat: bool,
     logger: logging.RootLogger,
     UseGridSearch: bool = False,
-    cv: int = 5,
+    cv: int = cv,
 ) -> tuple:
     """
     Train and evaluate a machine learning model with optional Grid Search.
@@ -364,6 +372,143 @@ def process_model(
     return model_, result, cv_scores, importance_df
 
 
+@ignore_warnings(category=ConvergenceWarning)
+def process_lr_model(
+    model: BaseEstimator,
+    model_name: str,
+    X_train: pd.DataFrame,
+    Y_train: pd.Series,
+    X_test: pd.DataFrame,
+    Y_test: pd.Series,
+    isCat: bool,
+    logger: logging.RootLogger,
+    cv: int = 5,
+) -> tuple:
+    """ """
+    logger.info(f"Using Features from {model_name}.")
+    model_ = model.fit(X_train, Y_train)
+    Y_Pred_train = model_.predict(X_train)
+    Y_Pred_test = model_.predict(X_test)
+    if isCat:
+        train_accuracy = accuracy_score(Y_train, Y_Pred_train)
+        test_accuracy = accuracy_score(Y_test, Y_Pred_test)
+        logger.info(f"{model_name} variables Accuracy Train: {train_accuracy:.4f}")
+        logger.info(f"{model_name} variables  Accuracy Test:: {test_accuracy:.4f}")
+
+        def create_results(X, Y, data_type):
+            probs = model_.predict_proba(X)
+            p = probs[:, 1]
+            fpr, tpr, _ = roc_curve(Y, p)
+            roc_auc_result = auc(fpr, tpr)
+            logger.info(f"{model_name} variables AUC {data_type}: {roc_auc_result:.2f}")
+            dresult = {"fpr": fpr, "tpr": tpr}
+            dft = pd.DataFrame(dresult)
+            dft["label"] = f"AUC {data_type}: {roc_auc_result:.2f}"
+            dft["model_auc"] = f"{model_name} variables AUC: {roc_auc_result:.2f}"
+            return dft
+
+        dftrain = create_results(X_train, Y_train, "Train")
+        dftest = create_results(X_test, Y_test, "Test")
+        result = pd.concat([dftrain, dftest])
+        cv_scores = cross_val_score(model_, X_train, Y_train, scoring="roc_auc", cv=cv)
+        logger.info(
+            f"{model_name} AUC Train Cross Validation Average: {np.mean(cv_scores):.2f}"
+        )
+    else:
+        RMSE_TRAIN = np.sqrt(mean_squared_error(Y_train, Y_Pred_train))
+        RMSE_TEST = np.sqrt(mean_squared_error(Y_test, Y_Pred_test))
+        logger.info(f"{model_name} MEAN Train: {Y_train.mean()}")
+        logger.info(f"{model_name} MEAN Test: {Y_test.mean()}")
+        result = pd.DataFrame(
+            {"RMSE": [RMSE_TRAIN, RMSE_TEST], "label": [f"TRAIN", f"TEST"]}
+        )
+        cv_scores = cross_val_score(
+            model_,
+            X_train,
+            Y_train,
+            scoring="neg_root_mean_squared_error",
+            cv=cv,
+        )
+        cv_scores *= -1
+        logger.info(
+            f"{model_name} RMSE Train: {RMSE_TRAIN} (Error Ratio: {RMSE_TRAIN/Y_train.mean()})"
+        )
+        logger.info(
+            f"{model_name} RMSE Test: {RMSE_TEST} (Error Ratio: {RMSE_TEST/Y_test.mean()})"
+        )
+        logger.info(
+            f"{model_name} RMSE Train Cross Validation Average: {np.mean(cv_scores):.2f} (Error Ratio: {np.mean(cv_scores)/Y_train.mean()})"
+        )
+
+    return model_, result, cv_scores
+
+
+def getCoef(
+    MODEL: BaseEstimator,
+    TRAIN_DATA: pd.DataFrame,
+    isCat: bool,
+    logger: logging.RootLogger,
+) -> None:
+    """ """
+    varNames = list(TRAIN_DATA.columns.values)
+    coef_dict = {}
+    if isCat:
+        coef_dict["INTERCEPT"] = MODEL.intercept_[0]
+        for coef, feat in zip(MODEL.coef_[0], varNames):
+            coef_dict[feat] = coef
+    else:
+        coef_dict["INTERCEPT"] = MODEL.intercept_
+        for coef, feat in zip(MODEL.coef_, varNames):
+            coef_dict[feat] = coef
+    logger.info(f"Total Variables: {len( varNames )} ")
+    for i in coef_dict:
+        logger.info(f"{i} = {coef_dict[i]}")
+
+
+def get_important_features(
+    model: BaseEstimator,
+    X_train: pd.DataFrame,
+    Y_train: pd.Series,
+    feature_thresh: float = feature_thresh,
+    max_depth: int = max_depth,
+    random_state: int = random_state,
+) -> list:
+    """ """
+    model.set_params(**{"max_depth": max_depth, "random_state": random_state})
+    model_ = model.fit(X_train, Y_train)
+    importance_feat = X_train.columns[model_.feature_importances_ > feature_thresh]
+    return importance_feat
+
+
+@ignore_warnings(category=ConvergenceWarning)
+def get_step_wise_features(
+    model: BaseEstimator,
+    model_type: str,
+    logger: logging.RootLogger,
+    X_train: pd.DataFrame,
+    Y_train: pd.Series,
+    img_path: str,
+    random_state: int = random_state,
+) -> list:
+    """ """
+    model.fit(X_train, Y_train)
+    fig, ax = plot_sfs(metric_dict=model.get_metric_dict(), kind=None, figsize=figsize)
+    ax.set_title(f"{model_type}: Sequential Forward Selection")
+    save_img_path = (
+        img_path
+        + f"{model_type}-Stepwise-rs{random_state}-md{max_depth}-ft{feature_thresh}-mv{max_step_wise_vars}.png"
+    )
+    fig.savefig(save_img_path, bbox_inches="tight")
+    dfm = pd.DataFrame.from_dict(model.get_metric_dict()).T
+    dfm = dfm[["feature_names", "avg_score"]]
+    dfm.avg_score = dfm.avg_score.astype(float)
+    maxIndex = dfm.avg_score.argmax()
+    logger.info(f"{model_type} best score: {dfm['avg_score'].iloc[ maxIndex ]} ")
+    stepVars = dfm.iloc[maxIndex,]
+    stepVars = list(stepVars.feature_names)
+    return stepVars
+
+
 def plot_roc(
     data: pd.DataFrame,
     x: str,
@@ -373,7 +518,7 @@ def plot_roc(
     xlabel: str,
     ylabel: str,
     save_img_path: str = None,
-    figsize: tuple = (6, 4),
+    figsize: tuple = figsize,
 ) -> None:
     """
     Plot ROC curves.
@@ -387,7 +532,7 @@ def plot_roc(
         xlabel (str): Label for the x-axis.
         ylabel (str): Label for the y-axis.
         save_img_path (str, optional): File path to save the plot as an image. Defaults to None.
-        figsize (tuple, optional): Figure size. Defaults to (6, 4).
+        figsize (tuple, optional): Figure size. Defaults to figsize from config file.
     """
     fig, ax = plt.subplots(figsize=figsize)
     sns.lineplot(data=data, x=x, y=y, ax=ax, hue=hue)
