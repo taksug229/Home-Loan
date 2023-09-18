@@ -2,19 +2,21 @@ import os
 import sys
 import numpy as np
 import pandas as pd
-from typing import List
+from typing import List, Tuple
 import matplotlib.pyplot as plt
 import seaborn as sns
 import logging
-from sklearn.model_selection import cross_val_score, GridSearchCV
+from sklearn.model_selection import cross_val_score, GridSearchCV, train_test_split
 from sklearn.metrics import accuracy_score, roc_curve, auc, mean_squared_error
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.config import (
+    TARGET_F,
     TARGET_A,
     targetcols,
     objcols,
     numcols,
+    random_state,
     max_depth,
     grid_search_dic,
 )
@@ -189,6 +191,45 @@ def save_graph(
     a.set(title=title)
     a.grid(axis="y")
     fig.savefig(save_img_path, bbox_inches="tight")
+
+
+def split_data(
+    df: pd.DataFrame,
+    logger: logging.RootLogger,
+    TARGET_F: str = TARGET_F,
+    TARGET_A: str = TARGET_A,
+    random_state: int = random_state,
+) -> Tuple[pd.DataFrame]:
+    logger.info("Data Split")
+    X = df.copy()
+    X = X.drop([TARGET_F, TARGET_A], axis=1)
+    Y = df.loc[:, [TARGET_F, TARGET_A]].copy()
+    A_mask = Y[TARGET_A].notna()
+    XA = X[A_mask].copy()
+    YA = Y[A_mask].copy()
+
+    X_train, X_test, Y_train, Y_test = train_test_split(
+        X,
+        Y,
+        train_size=0.8,
+        test_size=0.2,
+        random_state=random_state,
+        stratify=Y[TARGET_F],
+    )
+    XA_train, XA_test, YA_train, YA_test = train_test_split(
+        XA, YA, train_size=0.8, test_size=0.2, random_state=random_state
+    )
+
+    logger.info("FLAG DATA")
+    logger.info(f"TRAINING = {X_train.shape}")
+    logger.info(f"TEST = {X_test.shape}")
+
+    logger.info("LOSS AMOUNT DATA")
+    logger.info(f"TRAINING = {YA_train.shape}")
+    logger.info(f"TEST = {YA_test.shape}")
+    logger.info(f"\n{YA_train.describe().to_string()}")
+    logger.info(f"\n{YA_test.describe().to_string()}")
+    return X_train, X_test, Y_train, Y_test, XA_train, XA_test, YA_train, YA_test
 
 
 def process_model(

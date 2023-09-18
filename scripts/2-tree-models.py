@@ -16,6 +16,7 @@ import graphviz
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.functions import (
     preprocess_data_with_log,
+    split_data,
     process_model,
     plot_roc,
     plot_importance,
@@ -69,35 +70,23 @@ def main():
     logger.info("LOSS AMOUNT statistics after preprocessing")
     logger.info(f"\n{df[TARGET_A].describe().to_string()}")
 
-    logger.info("Data Split")
-    X = df.copy()
-    X = X.drop([TARGET_F, TARGET_A], axis=1)
-    Y = df.loc[:, [TARGET_F, TARGET_A]].copy()
-    A_mask = Y[TARGET_A].notna()
-    XA = X[A_mask].copy()
-    YA = Y[A_mask].copy()
-
-    X_train, X_test, Y_train, Y_test = train_test_split(
-        X,
-        Y,
-        train_size=0.8,
-        test_size=0.2,
+    # ----------- Split Data ----------
+    (
+        X_train,
+        X_test,
+        Y_train,
+        Y_test,
+        XA_train,
+        XA_test,
+        YA_train,
+        YA_test,
+    ) = split_data(
+        df=df,
+        logger=logger,
+        TARGET_F=TARGET_F,
+        TARGET_A=TARGET_A,
         random_state=random_state,
-        stratify=Y[TARGET_F],
     )
-    XA_train, XA_test, YA_train, YA_test = train_test_split(
-        XA, YA, train_size=0.8, test_size=0.2, random_state=random_state
-    )
-
-    logger.info("FLAG DATA")
-    logger.info(f"TRAINING = {X_train.shape}")
-    logger.info(f"TEST = {X_test.shape}")
-
-    logger.info("LOSS AMOUNT DATA")
-    logger.info(f"TRAINING = {YA_train.shape}")
-    logger.info(f"TEST = {YA_test.shape}")
-    logger.info(f"\n{YA_train.describe().to_string()}")
-    logger.info(f"\n{YA_test.describe().to_string()}")
 
     # ----------- Models ----------
     loop_dic = {
@@ -198,7 +187,7 @@ def main():
             )
 
             if name == "Decision Tree":
-                feature_cols = list(X.columns.values)
+                feature_cols = list(X_train.columns.values)
                 viz_file_name = (
                     f"Decition_Tree_{model_type}_{title_params}_viz-{random_state}"
                 )
