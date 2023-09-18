@@ -188,7 +188,7 @@ def save_graph(
     a = sns.barplot(ax=ax, x=x, y=y, hue=hue, data=df)
     a.set(title=title)
     a.grid(axis="y")
-    fig.savefig(save_img_path)
+    fig.savefig(save_img_path, bbox_inches="tight")
 
 
 def process_model(
@@ -327,7 +327,7 @@ def plot_roc(
     sns.lineplot(x=[0, 1], y=[0, 1], ax=ax, linestyle="--", color="gray")
     ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
     if save_img_path:
-        fig.savefig(save_img_path)
+        fig.savefig(save_img_path, bbox_inches="tight")
 
 
 def plot_importance(
@@ -355,4 +355,4 @@ def plot_importance(
     sns.barplot(x=x, y=y, data=data, ax=ax, color=color)
     ax.set(title=title)
     if save_img_path:
-        fig.savefig(save_img_path)
+        fig.savefig(save_img_path, bbox_inches="tight")
