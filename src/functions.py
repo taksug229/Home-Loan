@@ -241,6 +241,8 @@ def split_data(
     A_mask = Y[TARGET_A].notna()
     XA = X[A_mask].copy()
     YA = Y[A_mask].copy()
+    Y = Y.loc[:, TARGET_F]
+    YA = YA.loc[:, TARGET_A]
 
     X_train, X_test, Y_train, Y_test = train_test_split(
         X,
@@ -248,7 +250,7 @@ def split_data(
         train_size=0.8,
         test_size=0.2,
         random_state=random_state,
-        stratify=Y[TARGET_F],
+        stratify=Y,
     )
     XA_train, XA_test, YA_train, YA_test = train_test_split(
         XA, YA, train_size=0.8, test_size=0.2, random_state=random_state
@@ -273,7 +275,6 @@ def process_model(
     Y_train: pd.DataFrame,
     X_test: pd.DataFrame,
     Y_test: pd.DataFrame,
-    TARGET: str,
     isCat: bool,
     logger: logging.RootLogger,
     UseGridSearch: bool = False,
@@ -289,11 +290,10 @@ def process_model(
         Y_train (pd.DataFrame): Target variables of the training data.
         X_test (pd.DataFrame): Features of the test data.
         Y_test (pd.DataFrame): Target variables of the test data.
-        TARGET (str): Name of the target variable.
         isCat (bool): True if the problem is a classification task, False if regression.
         logger (logging.RootLogger): The logger to write logs on.
         UseGridSearch (bool, optional): If True, Grid Search parameters will be used. Defaults to False.
-        cv (int, optional): Number of cross-validation folds. Defaults to 5.
+        cv (int, optional): Number of cross-validation folds. Defaults to cv from config file.
 
     Returns:
         tuple: A tuple containing the trained model, result DataFrame with evaluation metrics,
@@ -302,7 +302,7 @@ def process_model(
     if UseGridSearch and isinstance(grid_search_dic, dict):
         logger.info(f"Using Grid Search for {model_name}.")
         grid_search = GridSearchCV(model, grid_search_dic[model_name], cv=cv)
-        grid_search.fit(X_train, Y_train[TARGET])
+        grid_search.fit(X_train, Y_train)
         best_params = grid_search.best_params_
         model.set_params(**best_params)
         if isCat:
@@ -312,19 +312,19 @@ def process_model(
     else:
         logger.info(f"Using Default Parameters for {model_name}.")
         model.set_params(**{"max_depth": max_depth})
-    model_ = model.fit(X_train, Y_train[TARGET])
+    model_ = model.fit(X_train, Y_train)
     Y_Pred_train = model_.predict(X_train)
     Y_Pred_test = model_.predict(X_test)
     if isCat:
-        train_accuracy = accuracy_score(Y_train[TARGET], Y_Pred_train)
-        test_accuracy = accuracy_score(Y_test[TARGET], Y_Pred_test)
+        train_accuracy = accuracy_score(Y_train, Y_Pred_train)
+        test_accuracy = accuracy_score(Y_test, Y_Pred_test)
         logger.info(f"{model_name} Accuracy Train: {train_accuracy:.4f}")
         logger.info(f"{model_name} Accuracy Test:: {test_accuracy:.4f}")
 
         def create_results(X, Y, data_type):
             probs = model_.predict_proba(X)
             p = probs[:, 1]
-            fpr, tpr, _ = roc_curve(Y[TARGET], p)
+            fpr, tpr, _ = roc_curve(Y, p)
             roc_auc_result = auc(fpr, tpr)
             logger.info(f"{model_name} AUC {data_type}: {roc_auc_result:.2f}")
             dresult = {"fpr": fpr, "tpr": tpr}
@@ -336,24 +336,22 @@ def process_model(
         dftrain = create_results(X_train, Y_train, "Train")
         dftest = create_results(X_test, Y_test, "Test")
         result = pd.concat([dftrain, dftest])
-        cv_scores = cross_val_score(
-            model_, X_train, Y_train[TARGET], scoring="roc_auc", cv=cv
-        )
+        cv_scores = cross_val_score(model_, X_train, Y_train, scoring="roc_auc", cv=cv)
         logger.info(
             f"{model_name} AUC Train Cross Validation Average: {np.mean(cv_scores):.2f}"
         )
     else:
-        RMSE_TRAIN = np.sqrt(mean_squared_error(Y_train[TARGET], Y_Pred_train))
-        RMSE_TEST = np.sqrt(mean_squared_error(Y_test[TARGET], Y_Pred_test))
-        logger.info(f"{model_name} MEAN Train: {Y_train[TARGET].mean()}")
-        logger.info(f"{model_name} MEAN Test: {Y_test[TARGET].mean()}")
+        RMSE_TRAIN = np.sqrt(mean_squared_error(Y_train, Y_Pred_train))
+        RMSE_TEST = np.sqrt(mean_squared_error(Y_test, Y_Pred_test))
+        logger.info(f"{model_name} MEAN Train: {Y_train.mean()}")
+        logger.info(f"{model_name} MEAN Test: {Y_test.mean()}")
         result = pd.DataFrame(
             {"RMSE": [RMSE_TRAIN, RMSE_TEST], "label": [f"TRAIN", f"TEST"]}
         )
         cv_scores = cross_val_score(
             model_,
             X_train,
-            Y_train[TARGET],
+            Y_train,
             scoring="neg_root_mean_squared_error",
             cv=cv,
         )
@@ -382,9 +380,28 @@ def process_lr_model(
     Y_test: pd.Series,
     isCat: bool,
     logger: logging.RootLogger,
-    cv: int = 5,
-) -> tuple:
-    """ """
+    cv: int = cv,
+) -> Tuple[BaseEstimator, pd.DataFrame, np.ndarray]:
+    """
+    Process and evaluate a machine learning model.
+
+    Args:
+        model (BaseEstimator): The machine learning model to process.
+        model_name (str): The name of the model.
+        X_train (pd.DataFrame): Training feature data.
+        Y_train (pd.Series): Training target data.
+        X_test (pd.DataFrame): Testing feature data.
+        Y_test (pd.Series): Testing target data.
+        isCat (bool): Indicates whether the problem is a classification problem.
+        logger (logging.RootLogger): The logger object for logging information.
+        cv (int, optional): Number of cross-validation folds. Defaults to cv from config file
+
+    Returns:
+        Tuple[BaseEstimator, pd.DataFrame, np.ndarray]:
+            - model_ (BaseEstimator): The trained machine learning model.
+            - result (pd.DataFrame): Evaluation results.
+            - cv_scores (np.ndarray): Cross-validation scores.
+    """
     logger.info(f"Using Features from {model_name}.")
     model_ = model.fit(X_train, Y_train)
     Y_Pred_train = model_.predict(X_train)
@@ -449,7 +466,18 @@ def getCoef(
     isCat: bool,
     logger: logging.RootLogger,
 ) -> None:
-    """ """
+    """
+    Get and log the coefficients of a machine learning model.
+
+    Args:
+        MODEL (BaseEstimator): The trained machine learning model.
+        TRAIN_DATA (pd.DataFrame): The training data used for the model.
+        isCat (bool): Indicates whether the problem is a classification problem.
+        logger (logging.RootLogger): The logger object for logging information.
+
+    Returns:
+        None
+    """
     varNames = list(TRAIN_DATA.columns.values)
     coef_dict = {}
     if isCat:
@@ -473,7 +501,20 @@ def get_important_features(
     max_depth: int = max_depth,
     random_state: int = random_state,
 ) -> list:
-    """ """
+    """
+    Get a list of important features based on a machine learning model's feature importances.
+
+    Args:
+        model (BaseEstimator): The machine learning model.
+        X_train (pd.DataFrame): Training feature data.
+        Y_train (pd.Series): Training target data.
+        feature_thresh (float, optional): The feature importance threshold. Defaults to feature_thresh from config file.
+        max_depth (int, optional): The maximum depth of the model (if applicable). Defaults to max_depth from config file.
+        random_state (int, optional): Random seed for reproducibility. Defaults to random_state from config file.
+
+    Returns:
+        list: A list of important feature names.
+    """
     model.set_params(**{"max_depth": max_depth, "random_state": random_state})
     model_ = model.fit(X_train, Y_train)
     importance_feat = X_train.columns[model_.feature_importances_ > feature_thresh]
@@ -490,7 +531,21 @@ def get_step_wise_features(
     img_path: str,
     random_state: int = random_state,
 ) -> list:
-    """ """
+    """
+    Perform stepwise feature selection and return the selected features.
+
+    Args:
+        model (BaseEstimator): The machine learning model.
+        model_type (str): The type or name of the model.
+        logger (logging.RootLogger): The logger object for logging information.
+        X_train (pd.DataFrame): Training feature data.
+        Y_train (pd.Series): Training target data.
+        img_path (str): The path for saving a plot (if applicable).
+        random_state (int, optional): Random seed for reproducibility. Defaults to random_state from config file.
+
+    Returns:
+        list: A list of selected features.
+    """
     model.fit(X_train, Y_train)
     fig, ax = plot_sfs(metric_dict=model.get_metric_dict(), kind=None, figsize=figsize)
     ax.set_title(f"{model_type}: Sequential Forward Selection")

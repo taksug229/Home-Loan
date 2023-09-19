@@ -183,7 +183,7 @@ def main():
                     logger=logger,
                     cv=cv,
                 )
-                getCoef(model_new, X_train_, isCat)
+                getCoef(model_new, X_train_, isCat, logger=logger)
                 titlec = f"Logistic Regression ROC Curve ({name} variables)"
                 save_img_path = (
                     img_path
@@ -243,7 +243,7 @@ def main():
                     logger=logger,
                     cv=cv,
                 )
-                getCoef(model_new, XA_train_, isCat)
+                getCoef(model_new, XA_train_, isCat, logger=logger)
             logger.info("------------------------------------")
 
     # ---------- Compare ROC Curves ----------
