@@ -63,8 +63,6 @@ def main():
         targetcols=targetcols,
         TARGET_A=TARGET_A,
     )
-    logger.info("LOSS AMOUNT statistics after preprocessing")
-    logger.info(f"\n{df[TARGET_A].describe().to_string()}")
 
     # ----------- Split Data ----------
     (
@@ -118,7 +116,7 @@ def main():
             logger.info(f"{name} {model_type}")
             if model_type == "Categorical":
                 isCat = True
-                model_new, result, cv_scores, important_vars = process_model(
+                model_new, result, _, important_vars = process_model(
                     model=model,
                     model_name=name,
                     X_train=X_train,
@@ -148,7 +146,7 @@ def main():
                 roc_results[name] = result
             else:
                 isCat = False
-                model_new, result, cv_scores, important_vars = process_model(
+                model_new, result, _, important_vars = process_model(
                     model=model,
                     model_name=name,
                     X_train=XA_train,
@@ -186,7 +184,7 @@ def main():
                     f"Decition_Tree_{model_type}_{title_params}_viz-{random_state}"
                 )
                 graphviz_data = tree.export_graphviz(
-                    model_new,
+                    decision_tree=model_new,
                     out_file=None,
                     filled=True,
                     rounded=True,

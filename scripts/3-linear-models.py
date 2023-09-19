@@ -65,8 +65,6 @@ def main():
         targetcols=targetcols,
         TARGET_A=TARGET_A,
     )
-    logger.info("LOSS AMOUNT statistics after preprocessing")
-    logger.info(f"\n{df[TARGET_A].describe().to_string()}")
 
     # ----------- Split Data ----------
     (

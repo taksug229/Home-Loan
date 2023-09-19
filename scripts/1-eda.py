@@ -12,7 +12,7 @@ from src.config import (
     objcols,
     numcols,
 )
-from src.functions import save_graph
+from src.functions import plot_bar
 from src.log_functions import build_logger, get_log_file_name, log_execution_time
 
 current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -84,7 +84,7 @@ def main():
     for tcol in targetcols:
         temp_df = df.groupby(objcols).agg(mean=(tcol, "mean")).reset_index()
         save_img_path = img_path + f"barchart_{tcol}.png"
-        save_graph(
+        plot_bar(
             df=temp_df,
             x="JOB",
             y="mean",
@@ -108,7 +108,7 @@ def main():
     )
     yloss = "expected_loss_amount"
     save_img_path_exploss = img_path + f"barchart_{yloss}.png"
-    save_graph(
+    plot_bar(
         df=expected_df,
         x="JOB",
         y=yloss,
@@ -123,7 +123,7 @@ def main():
     count_df = count_df.rename(columns={0: "Observations"})
     yobs = "Observations"
     save_img_path_obs = img_path + f"barchart_{yobs}.png"
-    save_graph(
+    plot_bar(
         df=count_df,
         x="JOB",
         y=yobs,

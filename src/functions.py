@@ -26,6 +26,7 @@ from src.config import (
     max_depth,
     feature_thresh,
     max_step_wise_vars,
+    verbose,
     grid_search_dic,
 )
 
@@ -171,30 +172,13 @@ def preprocess_data_with_log(
     logger.info(f"\n{headdum}")
 
     # ------- Cap loss -------
+    logger.info("LOSS AMOUNT statistics BEFORE capping")
+    logger.info(f"\n{data[TARGET_A].describe().to_string()}")
     data = data_cap(df=data, TARGET_A=TARGET_A)
+
+    logger.info("LOSS AMOUNT statistics AFTER capping")
+    logger.info(f"\n{data[TARGET_A].describe().to_string()}")
     return data
-
-
-def save_graph(
-    df: pd.DataFrame, x: str, y: str, hue: str, title: str, save_img_path: str
-) -> None:
-    """Function to save graph
-
-    Args:
-        df (pd.DataFrame): Dataframe used for plotting.
-        x (str): x variable column for barplot.
-        y (str): y variable column for barplot.
-        hue (str): hue variable column for barplot.
-        title (str): Title for the graph.
-        save_img_path (str): Image save path.
-    Returns:
-        None
-    """
-    fig, ax = plt.subplots()
-    a = sns.barplot(ax=ax, x=x, y=y, hue=hue, data=df)
-    a.set(title=title)
-    a.grid(axis="y")
-    fig.savefig(save_img_path, bbox_inches="tight")
 
 
 def split_data(
@@ -250,7 +234,6 @@ def split_data(
         train_size=0.8,
         test_size=0.2,
         random_state=random_state,
-        stratify=Y,
     )
     XA_train, XA_test, YA_train, YA_test = train_test_split(
         XA, YA, train_size=0.8, test_size=0.2, random_state=random_state
@@ -460,6 +443,70 @@ def process_lr_model(
     return model_, result, cv_scores
 
 
+@ignore_warnings(category=ConvergenceWarning)
+def process_tf_model(
+    model: BaseEstimator,
+    model_name: str,
+    X_train: pd.DataFrame,
+    Y_train: pd.Series,
+    X_test: pd.DataFrame,
+    Y_test: pd.Series,
+    isCat: bool,
+    theEpochs: int,
+    logger: logging.RootLogger,
+    verbose: bool = verbose,
+) -> Tuple[object, pd.DataFrame]:
+    """ """
+    model.fit(X_train, Y_train, epochs=theEpochs, verbose=verbose)
+    if isCat:
+        Y_Pred_train = np.argmax(model.predict(X_train), axis=1)
+        Y_Pred_test = np.argmax(model.predict(X_test), axis=1)
+    else:
+        Y_Pred_train = model.predict(X_train)
+        Y_Pred_test = model.predict(X_test)
+    if isCat:
+        train_accuracy = accuracy_score(Y_train, Y_Pred_train)
+        test_accuracy = accuracy_score(Y_test, Y_Pred_test)
+        logger.info(f"{model_name} Accuracy Train: {train_accuracy:.4f}")
+        logger.info(f"{model_name} Accuracy Test: {test_accuracy:.4f}")
+
+        def create_results(X, Y, data_type):
+            probs = model.predict(X)
+            p = probs[:, 1]
+            fpr, tpr, _ = roc_curve(Y, p)
+            roc_auc_result = auc(fpr, tpr)
+            logger.info(f"{model_name} AUC {data_type}: {roc_auc_result:.3f}")
+            dresult = {"fpr": fpr, "tpr": tpr}
+            dft = pd.DataFrame(dresult)
+            dft["label"] = f"AUC {data_type}: {roc_auc_result:.3f}"
+            dft["model_auc"] = f"{model_name} AUC: {roc_auc_result:.3f}"
+            dft["auc"] = roc_auc_result
+            return dft
+
+        dftrain = create_results(X_train, Y_train, "Train")
+        dftest = create_results(X_test, Y_test, "Test")
+        result = pd.concat([dftrain, dftest])
+    else:
+        RMSE_TRAIN = np.sqrt(mean_squared_error(Y_train, Y_Pred_train))
+        RMSE_TEST = np.sqrt(mean_squared_error(Y_test, Y_Pred_test))
+        logger.info(f"{model_name} MEAN Train: {Y_train.mean()}")
+        logger.info(f"{model_name} MEAN Test: {Y_test.mean()}")
+        result = pd.DataFrame(
+            {
+                "Model": [model_name, model_name],
+                "RMSE": [RMSE_TRAIN, RMSE_TEST],
+                "label": ["Train", "Test"],
+            }
+        )
+        logger.info(
+            f"{model_name} RMSE Train: {RMSE_TRAIN} (Error Ratio: {RMSE_TRAIN/Y_train.mean()})"
+        )
+        logger.info(
+            f"{model_name} RMSE Test: {RMSE_TEST} (Error Ratio: {RMSE_TEST/Y_test.mean()})"
+        )
+    return model, result
+
+
 def getCoef(
     MODEL: BaseEstimator,
     TRAIN_DATA: pd.DataFrame,
@@ -564,6 +611,56 @@ def get_step_wise_features(
     return stepVars
 
 
+def get_units(size: int) -> int:
+    """Creates unit size for neural network.
+
+    Args:
+        size (int): Variable size.
+
+    Returns:
+        int: Unit size
+    """
+    return int(2 * size)
+
+
+def scale_data(X: pd.DataFrame, theScaler: object) -> pd.DataFrame:
+    """Function to scale data.
+
+    Args:
+        X (pd.DataFrame): Data to be scaled
+        theScaler (object): Fitted Scaler.
+
+    Returns:
+        pd.DataFrame: Scaled data
+    """
+    X_new = theScaler.transform(X)
+    X_new = pd.DataFrame(X_new)
+    X_new.columns = list(X.columns.values)
+    return X_new
+
+
+def plot_bar(
+    df: pd.DataFrame, x: str, y: str, hue: str, title: str, save_img_path: str
+) -> None:
+    """Function to save graph
+
+    Args:
+        df (pd.DataFrame): Dataframe used for plotting.
+        x (str): x variable column for barplot.
+        y (str): y variable column for barplot.
+        hue (str): hue variable column for barplot.
+        title (str): Title for the graph.
+        save_img_path (str): Image save path.
+    Returns:
+        None
+    """
+    fig, ax = plt.subplots()
+    a = sns.barplot(ax=ax, x=x, y=y, hue=hue, data=df)
+    a.set(title=title)
+    a.grid(axis="y")
+    fig.savefig(save_img_path, bbox_inches="tight")
+
+
 def plot_roc(
     data: pd.DataFrame,
     x: str,
@@ -574,6 +671,7 @@ def plot_roc(
     ylabel: str,
     save_img_path: str = None,
     figsize: tuple = figsize,
+    legend_outside=False,
 ) -> None:
     """
     Plot ROC curves.
@@ -588,11 +686,14 @@ def plot_roc(
         ylabel (str): Label for the y-axis.
         save_img_path (str, optional): File path to save the plot as an image. Defaults to None.
         figsize (tuple, optional): Figure size. Defaults to figsize from config file.
+        legend_outside (bool, optional): Flag variable to move legend outside. Defaults to False.
     """
     fig, ax = plt.subplots(figsize=figsize)
     sns.lineplot(data=data, x=x, y=y, ax=ax, hue=hue)
     sns.lineplot(x=[0, 1], y=[0, 1], ax=ax, linestyle="--", color="gray")
     ax.set(title=title, xlabel=xlabel, ylabel=ylabel)
+    if legend_outside:
+        sns.move_legend(ax, "upper left", bbox_to_anchor=(1, 1))
     if save_img_path:
         fig.savefig(save_img_path, bbox_inches="tight")
 
