@@ -252,8 +252,8 @@ def split_data(
 
 
 def process_model(
-    model,
-    model_name,
+    model: BaseEstimator,
+    model_name: str,
     X_train: pd.DataFrame,
     Y_train: pd.DataFrame,
     X_test: pd.DataFrame,
@@ -267,7 +267,7 @@ def process_model(
     Train and evaluate a machine learning model with optional Grid Search.
 
     Args:
-        model (object): The machine learning model to be trained and evaluated.
+        model (BaseEstimator): The machine learning model to be trained and evaluated.
         model_name (str): Name of the model.
         X_train (pd.DataFrame): Features of the training data.
         Y_train (pd.DataFrame): Target variables of the training data.
