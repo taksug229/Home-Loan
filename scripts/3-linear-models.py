@@ -139,6 +139,7 @@ def main():
     for idx, (name, model_types) in enumerate(loop_dic.items()):
         for model_type, model in model_types.items():
             logger.info(f"{name} {model_type}")
+            name_str = name.replace(" ", "-")
             if model_type == "Categorical":
                 isCat = True
                 if name in ["Decision Tree", "Random Forest", "Gradient Boosting"]:
@@ -185,7 +186,7 @@ def main():
                 titlec = f"Logistic Regression ROC Curve ({name} variables)"
                 save_img_path = (
                     img_path
-                    + f"ROC-{name}-features--rs{random_state}-cv{cv}-md{max_depth}-ft{feature_thresh}-mv{max_step_wise_vars}.png"
+                    + f"ROC-{name_str}-features--rs{random_state}-cv{cv}-md{max_depth}-ft{feature_thresh}-mv{max_step_wise_vars}.png"
                 )
                 plot_roc(
                     data=result,

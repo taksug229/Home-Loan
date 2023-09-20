@@ -56,7 +56,7 @@ This repository provides a concise overview of working with the [HMEQ dataset](h
 In the data preparation phase, we have performed the following key steps:
 
 1. **Handling Missing Values:**
-   - For the reason for loan (REASON) and cCurrent job (JOB) columns, we imputed missing values as "Unknown" to ensure data integrity.
+   - For the reason for loan (REASON) and current job (JOB) columns, we imputed missing values as "Unknown" to ensure data integrity.
    - For missing numerical values in other columns, we applied imputation by replacing them with the median value of their respective columns. To keep track of imputed values, a flag variable was created.
 
 2. **Creating Dummy Variables:**
@@ -67,7 +67,7 @@ In the data preparation phase, we have performed the following key steps:
 
 4. **Default and Loss Statistics:**
    - Out of the 5,960 loans in the dataset, 20% experienced defaults.
-   - After capping the loss amount, the average loss per defaulted loan was calculated to be approximately $12,118.
+   - After capping the loss amount, the average loss per defaulted loan was calculated to be approximately $12,118 with a standard deviation of $7,574.
 
 These data preparation steps ensure that our dataset is well-prepared for further analysis and model building, with missing values handled, categorical variables encoded, and outliers addressed.
 
@@ -79,15 +79,26 @@ Although sample sizes are small, self-workers and salespeople have high risks. S
 | Average default rate | Average loss amount in USD |
 | ![expected loss barchart](readme_img/barchart_expected_loss_amount.png) | ![expected loss barchart](readme_img/barchart_Observations.png) |
 | Expected loss value in USD | Observation count |
-
+---
 
 Delinquencies on credit reports (DELINQ) had the highest positive correlation to defaulting at 35%, and credit line age (CLAGE) had the highest negative correlation at -17%. These two are modest correlations at best, so looking into the data further would be essential. Also, we have an imbalance in the number of observations for each job since we have many “Other” and very few “Sales” and “Self.”
 
+![numcols distribution](readme_img/distribution_num_variables.png)
 
 ---
 
 ## Comparing Tree Models
+We've compared three tree-based; models, Decision Trees (DT), Random Forests (RF), and Gradient Boosting (GB), to predict 1) the probability of a loan default and 2) the loss amount when the loan defaults.
 
+The debt-to-income ratio was the feature that appeared frequently in predicting the default for all models, and the loan amount was the most important for predicting the loss amount on the loan. These findings make sense because a high debt-to-income ratio will increase the likelihood of not paying the bills, and the higher the loan, the higher the possibility of having a high loss amount.
+
+| ![Image 1]("readme_img/feature_importance-Decision Tree-Categorical-Default-Params-1.png") | ![Image 2](image2.jpg) | ![Image 3](image3.jpg) |
+|:---:|:---:|:---:|
+| Image 1 Caption | Image 2 Caption | Image 3 Caption |
+| ![Image 4](image4.jpg) | ![Image 5](image5.jpg) | ![Image 6](image6.jpg) |
+| Image 4 Caption | Image 5 Caption | Image 6 Caption |
+| ![Image 7](image7.jpg) | ![Image 8](image8.jpg) | ![Image 9](image9.jpg) |
+| Image 7 Caption | Image 8 Caption | Image 9 Caption |
 
 ---
 

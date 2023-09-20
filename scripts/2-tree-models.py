@@ -114,6 +114,7 @@ def main():
     for idx, (name, model_types) in enumerate(loop_dic.items()):
         for model_type, model in model_types.items():
             logger.info(f"{name} {model_type}")
+            name_str = name.replace(" ", "-")
             if model_type == "Categorical":
                 isCat = True
                 model_new, result, _, important_vars = process_model(
@@ -130,7 +131,7 @@ def main():
                 )
                 titlec = f"{name} ROC Curve ({title_params})"
                 save_img_path = (
-                    img_path + f"ROC-{name}-{title_params}-{random_state}.png"
+                    img_path + f"ROC-{name_str}-{title_params}-{random_state}.png"
                 )
                 plot_roc(
                     data=result,
@@ -166,7 +167,7 @@ def main():
             color = sns.color_palette("tab10")[idx]
             save_img_path = (
                 img_path
-                + f"feature_importance-{name}-{model_type}-{title_params}-{random_state}.png"
+                + f"feature_importance-{name_str}-{model_type}-{title_params}-{random_state}.png"
             )
             plot_importance(
                 data=important_vars,
