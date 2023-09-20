@@ -38,14 +38,14 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 base_file_name = os.path.splitext(os.path.basename(__file__))[0]
 path = os.path.abspath(os.path.join(current_dir, os.pardir))
 log_path = path + f"/logs/"
-img_path = path + f"/img/{base_file_name}/"
-viz_path = img_path + f"/viz/"
+img_path = path + f"/img/{base_file_name}/{title_params}/"
+viz_path = img_path + f"/viz/{title_params}/"
 os.makedirs(log_path, exist_ok=True)
 os.makedirs(img_path, exist_ok=True)
 os.makedirs(viz_path, exist_ok=True)
 
 # Create logs
-log_file_name = get_log_file_name(base_file_name + "-")
+log_file_name = get_log_file_name(base_file_name + f"-{title_params}-")
 log_file_path = log_path + log_file_name
 logger = build_logger(log_file_path)
 
