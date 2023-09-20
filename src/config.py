@@ -28,21 +28,7 @@ max_depth = 3  # Depth size for tree models.
 feature_thresh = 0.05  # Feature importance threshold for tree models.
 max_step_wise_vars = 10  # Max step wise variables.
 
-# -------- Deep Learning Settings --------
-feature_thresh_dl = 0.005  # Feature importance threshold for deep learning models.
-variable_selection_model = "RF"  # Variable selection for deep learning models. Choose between "DT", "RF", "GB" or None
-
-activations_names = {
-    "Relu": tf.keras.activations.relu,
-    "Sigmoid": tf.keras.activations.sigmoid,
-    "Tanh": tf.keras.activations.tanh,
-}
-verbose = False
-epochs_categorical = 1  # Original 100
-epochs_regression = 1  # Original 800
-drop_out_ratio = 0.2  # Drop ratio for drop out layer for deep learning models.
-
-# -------- Grid Search Parameters --------
+# -------- Grid Search Parameters for Tree Models --------
 UseGridSearch = False  # If True, Grid search parameters will be used. If False, Default Parameters will be used.
 
 grid_search_dic = {
@@ -63,3 +49,17 @@ if UseGridSearch:
     title_params = "GS-Params"
 else:
     title_params = "Default-Params"
+
+# -------- Deep Learning Settings --------
+feature_thresh_dl = 0.005  # Feature importance threshold for deep learning models.
+variable_selection_model = None  # Variable selection for deep learning models. Choose between "DT", "RF", "GB" or None
+
+activations_names = {
+    "Relu": tf.keras.activations.relu,
+    "Sigmoid": tf.keras.activations.sigmoid,
+    "Tanh": tf.keras.activations.tanh,
+}
+verbose = False
+epochs_categorical = 100  # Original 100
+epochs_regression = 800  # Original 800
+drop_out_ratio = 0.2  # Drop ratio for drop out layer for deep learning models.

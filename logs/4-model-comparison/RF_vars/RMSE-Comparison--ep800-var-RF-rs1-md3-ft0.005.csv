@@ -1,0 +1,13 @@
+RMSE,label,Model
+2481.2667621218443,Test,TF-Relu-hl-2-do-False-ep-800
+2674.342888359198,Test,TF-Relu-hl-2-do-True-ep-800
+4393.564408817469,Test,TF-Relu-hl-1-do-False-ep-800
+4457.647628974856,Test,TF-Relu-hl-1-do-True-ep-800
+12606.613958528927,Test,TF-Tanh-hl-1-do-False-ep-800
+12610.410434756155,Test,TF-Tanh-hl-1-do-True-ep-800
+12612.317425317899,Test,TF-Sigmoid-hl-1-do-False-ep-800
+12613.777862392457,Test,TF-Tanh-hl-2-do-False-ep-800
+12617.487904153159,Test,TF-Sigmoid-hl-1-do-True-ep-800
+12618.591590062095,Test,TF-Tanh-hl-2-do-True-ep-800
+12740.749555211294,Test,TF-Sigmoid-hl-2-do-False-ep-800
+12754.685534301132,Test,TF-Sigmoid-hl-2-do-True-ep-800

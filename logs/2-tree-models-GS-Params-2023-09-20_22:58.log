@@ -1,0 +1,335 @@
+2023-09-20 22:58:25: INFO: Total NaN values in each row.
+2023-09-20 22:58:25: INFO: NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default.
+2023-09-20 22:58:25: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+MORTDUE             518
+VALUE               112
+REASON              252
+JOB                 279
+YOJ                 515
+DEROG               708
+DELINQ              580
+CLAGE               308
+NINQ                510
+CLNO                222
+DEBTINC            1267
+2023-09-20 22:58:25: INFO: Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values.
+2023-09-20 22:58:25: INFO: 
+                 TARGET_BAD_FLAG  TARGET_LOSS_AMT     LOAN     MORTDUE     VALUE    YOJ  DEROG  DELINQ       CLAGE  NINQ  CLNO    DEBTINC
+REASON  JOB                                                                                                                              
+DebtCon Mgr                  0.0          14360.0  19450.0   76600.000   99025.5   8.00    0.0     0.0  175.570979   1.0  23.0  36.290354
+        Office               0.0          13453.0  17900.0   63744.000   90810.5   5.00    0.0     0.0  167.657981   1.0  22.0  36.099281
+        Other                0.0          12124.0  18000.0   54653.000   77519.0   8.00    0.0     0.0  152.202235   1.0  19.0  35.730559
+        ProfExe              0.0          15237.0  18500.0   83149.500  113083.5   8.00    0.0     0.0  190.800000   1.0  25.0  33.591086
+        Sales                0.0          16656.0  15200.0   74392.500   87446.5   4.00    0.0     0.0  141.268671   0.0  23.0  35.033102
+        Self                 0.0          19324.0  23400.0  101250.000  125252.0   5.00    0.0     0.0  178.951539   1.0  24.0  34.554127
+        NaN                  0.0          14756.0  11100.0   59701.500   80037.0   5.00    0.0     0.0  129.896035   1.0  16.0  31.626822
+HomeImp Mgr                  0.0           6533.5  13250.0   74013.000  102377.5   8.00    0.0     0.0  162.637297   0.0  21.0  33.200548
+        Office               0.0           5817.0  12000.0   62200.000   80147.0  10.00    0.0     0.0  175.082704   0.0  17.5  35.949877
+        Other                0.0           4572.0  10800.0   53812.500   73319.0   7.00    0.0     0.0  168.666667   0.0  15.0  34.485533
+        ProfExe              0.0           6934.0  14900.0   82889.500  107442.5   7.00    0.0     0.0  177.854846   0.0  22.0  32.870335
+        Sales                0.0           3870.0   5500.0   70793.000   70735.0   4.00    1.0     0.0  156.625882   0.0  23.0  40.442569
+        Self                 0.0          17239.0  24000.0   78943.500  167020.0   7.00    0.0     0.0  192.226177   1.0  21.0  35.871959
+        NaN                  0.0          12251.5  21900.0   85337.000  100147.0   8.00    0.0     0.0  142.147140   0.0  13.0  31.203189
+NaN     Mgr                  0.0          14283.0  20000.0  111000.000  168708.0  13.00    0.0     4.0  249.242763   1.0  27.0  32.698229
+        Office               0.0              NaN  15500.0   25751.000   44461.0   2.00    0.0     0.0  211.033333   0.0  16.0  37.816428
+        Other                0.0          11471.0  16100.0   67371.305   95085.0  12.00    0.0     0.0  246.918710   0.0  19.0  31.183363
+        ProfExe              0.0          10107.5  18500.0   62772.000   90031.0   6.50    0.0     0.0  108.136393   1.0  17.5  27.740432
+        Self                 1.0          28095.0  27700.0   61396.000  111627.0   5.00    0.0     1.0  101.466667   1.0  28.0  84.613889
+        NaN                  0.0           5312.0  13300.0   47811.000   72583.0   0.95    0.0     0.0  118.976063   0.0   0.0  23.988913
+2023-09-20 22:58:25: INFO: Impute missing values START.
+2023-09-20 22:58:25: INFO: Impute missing categorical values to 'Unknwon'.
+2023-09-20 22:58:25: INFO: Add new column for flag and imputed numbers.
+2023-09-20 22:58:25: INFO: The NaNs will be imputed by the median of per Job and Reason.
+2023-09-20 22:58:25: INFO: The original imputed columns will be deleted.
+2023-09-20 22:58:25: INFO: Impute missing values END.
+2023-09-20 22:58:25: INFO: First 5 observations of the imputed data
+2023-09-20 22:58:25: INFO: 
+                         0           1           2       3          4
+TARGET_BAD_FLAG          1           1           1       1          0
+TARGET_LOSS_AMT      641.0      1109.0       767.0  1425.0        NaN
+LOAN                  1100        1300        1500    1500       1700
+MORTDUE            25860.0     70053.0     13500.0     NaN    97800.0
+VALUE              39025.0     68400.0     16700.0     NaN   112000.0
+REASON             HomeImp     HomeImp     HomeImp     NaN    HomeImp
+JOB                  Other       Other       Other     NaN     Office
+YOJ                   10.5         7.0         4.0     NaN        3.0
+DEROG                  0.0         0.0         0.0     NaN        0.0
+DELINQ                 0.0         2.0         0.0     NaN        0.0
+CLAGE            94.366667  121.833333  149.466667     NaN  93.333333
+NINQ                   1.0         0.0         1.0     NaN        0.0
+CLNO                   9.0        14.0        10.0     NaN       14.0
+DEBTINC                NaN         NaN         NaN     NaN        NaN
+2023-09-20 22:58:25: INFO: Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)
+2023-09-20 22:58:25: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+REASON                0
+JOB                   0
+M_MORTDUE             0
+IMP_MORTDUE           0
+M_VALUE               0
+IMP_VALUE             0
+M_YOJ                 0
+IMP_YOJ               0
+M_DEROG               0
+IMP_DEROG             0
+M_DELINQ              0
+IMP_DELINQ            0
+M_CLAGE               0
+IMP_CLAGE             0
+M_NINQ                0
+IMP_NINQ              0
+M_CLNO                0
+IMP_CLNO              0
+M_DEBTINC             0
+IMP_DEBTINC           0
+2023-09-20 22:58:25: INFO: Creating dummy variables for categorical columns
+2023-09-20 22:58:25: INFO: Completed creating dummy variables
+2023-09-20 22:58:25: INFO: First 5 observations of the data with dummy variables
+2023-09-20 22:58:25: INFO: 
+   TARGET_BAD_FLAG  TARGET_LOSS_AMT  LOAN  M_MORTDUE  IMP_MORTDUE  M_VALUE  IMP_VALUE  M_YOJ  IMP_YOJ  M_DEROG  IMP_DEROG  M_DELINQ  IMP_DELINQ  M_CLAGE   IMP_CLAGE  M_NINQ  IMP_NINQ  M_CLNO  IMP_CLNO  M_DEBTINC  IMP_DEBTINC  z_REASON_DebtCon  z_REASON_HomeImp  z_JOB_Mgr  z_JOB_Office  z_JOB_Other  z_JOB_ProfExe  z_JOB_Sales  z_JOB_Self
+0                1            641.0  1100          0      25860.0        0    39025.0      0    10.50        0        0.0         0         0.0        0   94.366667       0       1.0       0       9.0          1    34.485533                 0                 1          0             0            1              0            0           0
+1                1           1109.0  1300          0      70053.0        0    68400.0      0     7.00        0        0.0         0         2.0        0  121.833333       0       0.0       0      14.0          1    34.485533                 0                 1          0             0            1              0            0           0
+2                1            767.0  1500          0      13500.0        0    16700.0      0     4.00        0        0.0         0         0.0        0  149.466667       0       1.0       0      10.0          1    34.485533                 0                 1          0             0            1              0            0           0
+3                1           1425.0  1500          1      47811.0        1    72583.0      1     0.95        1        0.0         1         0.0        1  118.976063       1       0.0       1       0.0          1    23.988913                 0                 0          0             0            0              0            0           0
+4                0              NaN  1700          0      97800.0        0   112000.0      0     3.00        0        0.0         0         0.0        0   93.333333       0       0.0       0      14.0          1    35.949877                 0                 1          0             1            0              0            0           0
+2023-09-20 22:58:25: INFO: LOSS AMOUNT statistics BEFORE capping
+2023-09-20 22:58:25: INFO: 
+count     1189.000000
+mean     13414.576955
+std      10839.455965
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      78987.000000
+2023-09-20 22:58:25: INFO: LOSS AMOUNT statistics AFTER capping
+2023-09-20 22:58:25: INFO: 
+count     1189.000000
+mean     12118.188394
+std       7574.544843
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      25000.000000
+2023-09-20 22:58:25: INFO: Data Split
+2023-09-20 22:58:25: INFO: FLAG DATA
+2023-09-20 22:58:25: INFO: TRAINING = (4768, 27)
+2023-09-20 22:58:25: INFO: TEST = (1192, 27)
+2023-09-20 22:58:25: INFO: LOSS AMOUNT DATA
+2023-09-20 22:58:25: INFO: TRAINING = (951,)
+2023-09-20 22:58:25: INFO: TEST = (238,)
+2023-09-20 22:58:25: INFO: 
+count      951.000000
+mean     12254.549947
+std       7625.029926
+min        224.000000
+25%       5781.000000
+50%      11122.000000
+75%      18082.000000
+max      25000.000000
+2023-09-20 22:58:25: INFO: 
+count      238.000000
+mean     11573.315126
+std       7359.835410
+min        320.000000
+25%       5025.500000
+50%      10390.000000
+75%      16489.500000
+max      25000.000000
+2023-09-20 22:58:25: INFO: Decision Tree Categorical
+2023-09-20 22:58:25: INFO: Using Grid Search for Decision Tree.
+2023-09-20 22:58:25: INFO: Decision Tree DEFAULT RISK best parameters = {'max_depth': 5, 'min_samples_leaf': 1}
+2023-09-20 22:58:25: INFO: Decision Tree Accuracy Train: 0.8972
+2023-09-20 22:58:25: INFO: Decision Tree Accuracy Test:: 0.8867
+2023-09-20 22:58:25: INFO: Decision Tree AUC Train: 0.87
+2023-09-20 22:58:25: INFO: Decision Tree AUC Test: 0.83
+2023-09-20 22:58:25: INFO: Decision Tree AUC Train Cross Validation Average: 0.86
+2023-09-20 22:58:25: INFO: Important Variables
+        Feature  Importance
+17    M_DEBTINC    0.592147
+18  IMP_DEBTINC    0.146654
+10   IMP_DELINQ    0.098102
+12    IMP_CLAGE    0.046862
+3       M_VALUE    0.031055
+8     IMP_DEROG    0.026125
+7       M_DEROG    0.016707
+6       IMP_YOJ    0.013207
+5         M_YOJ    0.009623
+25  z_JOB_Sales    0.006808
+4     IMP_VALUE    0.006159
+11      M_CLAGE    0.002354
+16     IMP_CLNO    0.002239
+21    z_JOB_Mgr    0.001959
+2023-09-20 22:58:26: INFO: Saved viz file to: /Users/takeshisugiyama/Desktop/Home_Loan/img/2-tree-models/GS-Params//viz/GS-Params//Decition_Tree_Categorical_GS-Params_viz-1
+2023-09-20 22:58:26: INFO: Decision Tree Regression
+2023-09-20 22:58:26: INFO: Using Grid Search for Decision Tree.
+2023-09-20 22:58:26: INFO: Decision Tree LOSS AMOUNT best parameters = {'max_depth': 5, 'min_samples_leaf': 2}
+2023-09-20 22:58:26: INFO: Decision Tree MEAN Train: 12254.549947423764
+2023-09-20 22:58:26: INFO: Decision Tree MEAN Test: 11573.31512605042
+2023-09-20 22:58:26: INFO: Decision Tree RMSE Train: 2825.915599045599
+2023-09-20 22:58:26: INFO: Decision Tree RMSE Test: 3246.2740421025205
+2023-09-20 22:58:26: INFO: Decision Tree RMSE Train Cross Validation Average: 3679.25
+2023-09-20 22:58:26: INFO: Important Variables
+        Feature  Importance
+0          LOAN    0.797655
+16     IMP_CLNO    0.086774
+18  IMP_DEBTINC    0.049797
+17    M_DEBTINC    0.047440
+12    IMP_CLAGE    0.014697
+10   IMP_DELINQ    0.003600
+4     IMP_VALUE    0.000037
+2023-09-20 22:58:27: INFO: Saved viz file to: /Users/takeshisugiyama/Desktop/Home_Loan/img/2-tree-models/GS-Params//viz/GS-Params//Decition_Tree_Regression_GS-Params_viz-1
+2023-09-20 22:58:27: INFO: Random Forest Categorical
+2023-09-20 22:58:27: INFO: Using Grid Search for Random Forest.
+2023-09-20 22:58:44: INFO: Random Forest DEFAULT RISK best parameters = {'bootstrap': False, 'max_depth': 5, 'n_estimators': 100}
+2023-09-20 22:58:45: INFO: Random Forest Accuracy Train: 0.8949
+2023-09-20 22:58:45: INFO: Random Forest Accuracy Test:: 0.8725
+2023-09-20 22:58:45: INFO: Random Forest AUC Train: 0.94
+2023-09-20 22:58:45: INFO: Random Forest AUC Test: 0.92
+2023-09-20 22:58:46: INFO: Random Forest AUC Train Cross Validation Average: 0.92
+2023-09-20 22:58:53: INFO: Important Variables
+             Feature  Importance
+17         M_DEBTINC    0.443821
+10        IMP_DELINQ    0.151402
+18       IMP_DEBTINC    0.105917
+3            M_VALUE    0.069965
+8          IMP_DEROG    0.066383
+12         IMP_CLAGE    0.035423
+0               LOAN    0.029060
+14          IMP_NINQ    0.017410
+4          IMP_VALUE    0.015401
+16          IMP_CLNO    0.015305
+2        IMP_MORTDUE    0.010617
+6            IMP_YOJ    0.010560
+7            M_DEROG    0.006361
+23       z_JOB_Other    0.002672
+11           M_CLAGE    0.002565
+9           M_DELINQ    0.002334
+1          M_MORTDUE    0.002308
+5              M_YOJ    0.002118
+15            M_CLNO    0.001891
+22      z_JOB_Office    0.001538
+20  z_REASON_HomeImp    0.001526
+13            M_NINQ    0.001314
+25       z_JOB_Sales    0.001178
+26        z_JOB_Self    0.001029
+19  z_REASON_DebtCon    0.000916
+24     z_JOB_ProfExe    0.000543
+21         z_JOB_Mgr    0.000443
+2023-09-20 22:58:53: INFO: Random Forest Regression
+2023-09-20 22:58:53: INFO: Using Grid Search for Random Forest.
+2023-09-20 22:59:06: INFO: Random Forest LOSS AMOUNT best parameters = {'bootstrap': True, 'max_depth': 5, 'n_estimators': 200}
+2023-09-20 22:59:06: INFO: Random Forest MEAN Train: 12254.549947423764
+2023-09-20 22:59:06: INFO: Random Forest MEAN Test: 11573.31512605042
+2023-09-20 22:59:08: INFO: Random Forest RMSE Train: 2230.3318197172616
+2023-09-20 22:59:08: INFO: Random Forest RMSE Test: 2809.8514980621144
+2023-09-20 22:59:08: INFO: Random Forest RMSE Train Cross Validation Average: 2875.39
+2023-09-20 22:59:08: INFO: Important Variables
+             Feature  Importance
+0               LOAN    0.776223
+16          IMP_CLNO    0.076571
+18       IMP_DEBTINC    0.051656
+17         M_DEBTINC    0.045639
+12         IMP_CLAGE    0.019058
+10        IMP_DELINQ    0.007604
+2        IMP_MORTDUE    0.005504
+6            IMP_YOJ    0.004412
+8          IMP_DEROG    0.003068
+14          IMP_NINQ    0.002828
+4          IMP_VALUE    0.002517
+11           M_CLAGE    0.001799
+3            M_VALUE    0.001030
+20  z_REASON_HomeImp    0.000829
+19  z_REASON_DebtCon    0.000311
+1          M_MORTDUE    0.000262
+13            M_NINQ    0.000178
+22      z_JOB_Office    0.000168
+23       z_JOB_Other    0.000127
+24     z_JOB_ProfExe    0.000088
+5              M_YOJ    0.000050
+7            M_DEROG    0.000033
+15            M_CLNO    0.000022
+21         z_JOB_Mgr    0.000019
+26        z_JOB_Self    0.000003
+25       z_JOB_Sales    0.000003
+2023-09-20 22:59:09: INFO: Gradient Boosting Categorical
+2023-09-20 22:59:09: INFO: Using Grid Search for Gradient Boosting.
+2023-09-20 23:00:07: INFO: Gradient Boosting DEFAULT RISK best parameters = {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}
+2023-09-20 23:00:10: INFO: Gradient Boosting Accuracy Train: 0.9880
+2023-09-20 23:00:10: INFO: Gradient Boosting Accuracy Test:: 0.9270
+2023-09-20 23:00:10: INFO: Gradient Boosting AUC Train: 1.00
+2023-09-20 23:00:10: INFO: Gradient Boosting AUC Test: 0.95
+2023-09-20 23:00:22: INFO: Gradient Boosting AUC Train Cross Validation Average: 0.95
+2023-09-20 23:00:23: INFO: Important Variables
+             Feature  Importance
+17         M_DEBTINC    0.360068
+18       IMP_DEBTINC    0.127897
+12         IMP_CLAGE    0.091661
+10        IMP_DELINQ    0.072175
+4          IMP_VALUE    0.054745
+2        IMP_MORTDUE    0.046817
+0               LOAN    0.042274
+6            IMP_YOJ    0.037191
+16          IMP_CLNO    0.033916
+8          IMP_DEROG    0.028755
+3            M_VALUE    0.021422
+14          IMP_NINQ    0.020130
+7            M_DEROG    0.010869
+11           M_CLAGE    0.009195
+5              M_YOJ    0.008095
+23       z_JOB_Other    0.006187
+22      z_JOB_Office    0.005415
+24     z_JOB_ProfExe    0.004116
+25       z_JOB_Sales    0.004069
+21         z_JOB_Mgr    0.003678
+15            M_CLNO    0.002949
+13            M_NINQ    0.001835
+1          M_MORTDUE    0.001805
+26        z_JOB_Self    0.001660
+20  z_REASON_HomeImp    0.001127
+9           M_DELINQ    0.000984
+19  z_REASON_DebtCon    0.000964
+2023-09-20 23:00:24: INFO: Gradient Boosting Regression
+2023-09-20 23:00:24: INFO: Using Grid Search for Gradient Boosting.
+2023-09-20 23:00:35: INFO: Gradient Boosting LOSS AMOUNT best parameters = {'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 200}
+2023-09-20 23:00:36: INFO: Gradient Boosting MEAN Train: 12254.549947423764
+2023-09-20 23:00:36: INFO: Gradient Boosting MEAN Test: 11573.31512605042
+2023-09-20 23:00:38: INFO: Gradient Boosting RMSE Train: 217.08366411553922
+2023-09-20 23:00:38: INFO: Gradient Boosting RMSE Test: 1592.874006879879
+2023-09-20 23:00:38: INFO: Gradient Boosting RMSE Train Cross Validation Average: 1950.91
+2023-09-20 23:00:38: INFO: Important Variables
+             Feature  Importance
+0               LOAN    0.697353
+16          IMP_CLNO    0.091580
+17         M_DEBTINC    0.054027
+18       IMP_DEBTINC    0.050864
+12         IMP_CLAGE    0.039524
+10        IMP_DELINQ    0.025246
+6            IMP_YOJ    0.009083
+20  z_REASON_HomeImp    0.007418
+2        IMP_MORTDUE    0.006115
+14          IMP_NINQ    0.004752
+8          IMP_DEROG    0.004584
+4          IMP_VALUE    0.003787
+3            M_VALUE    0.001704
+19  z_REASON_DebtCon    0.001280
+22      z_JOB_Office    0.000665
+25       z_JOB_Sales    0.000537
+9           M_DELINQ    0.000390
+26        z_JOB_Self    0.000374
+23       z_JOB_Other    0.000229
+15            M_CLNO    0.000096
+1          M_MORTDUE    0.000092
+13            M_NINQ    0.000084
+21         z_JOB_Mgr    0.000082
+5              M_YOJ    0.000058
+24     z_JOB_ProfExe    0.000045
+11           M_CLAGE    0.000019
+7            M_DEROG    0.000010
+2023-09-20 23:00:41: INFO: Execution time: 0:02:16.470904
