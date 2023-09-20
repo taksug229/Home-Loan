@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 4. [Comparing Linear Models](#comparing-linear-models)
 
-5. [Comparing Neural Networks](#comparing-neural-networks)
+5. [Comparing Neural Networks and All Models](#comparing-neural-networks-and-all-models)
 
 5. [Conclusion and future works](#conclusion-and-future-works)
 
@@ -50,3 +50,65 @@ This repository provides a concise overview of working with the [HMEQ dataset](h
 ---
 
 ## Data Preparation and EDA
+
+### Data Preparation
+
+In the data preparation phase, we have performed the following key steps:
+
+1. **Handling Missing Values:**
+   - For the reason for loan (REASON) and cCurrent job (JOB) columns, we imputed missing values as "Unknown" to ensure data integrity.
+   - For missing numerical values in other columns, we applied imputation by replacing them with the median value of their respective columns. To keep track of imputed values, a flag variable was created.
+
+2. **Creating Dummy Variables:**
+   - To facilitate modeling with categorical variables, we generated dummy variables for categorical columns. This transformation allows us to use these variables effectively in machine learning models.
+
+3. **Capping Loss Amounts:**
+   - Observing outliers in the loss amount (TARGET_LOSS_AMT) column, we capped the loss values at $25,000. This step helps mitigate the influence of extreme values on our models and analysis.
+
+4. **Default and Loss Statistics:**
+   - Out of the 5,960 loans in the dataset, 20% experienced defaults.
+   - After capping the loss amount, the average loss per defaulted loan was calculated to be approximately $12,118.
+
+These data preparation steps ensure that our dataset is well-prepared for further analysis and model building, with missing values handled, categorical variables encoded, and outliers addressed.
+
+### EDA
+Although sample sizes are small, self-workers and salespeople have high risks. Self-workers had an average default rate of 44% when the loan was for debt consolidation (DebtCon). This loan was also the second-highest average loss amount of over $20,000. Salespeople have shown a high risk in both debt consolidation and home improvement (HomeImpImp) loans, with an average default rate of 35% and 33%.
+
+| ![default barchart](readme_img/barchart_TARGET_BAD_FLAG.png) | ![loss barchart](readme_img/barchart_TARGET_LOSS_AMT.png) |
+|:---:|:---:|
+| Average default rate | Average loss amount in USD |
+| ![expected loss barchart](readme_img/barchart_expected_loss_amount.png) | ![expected loss barchart](readme_img/barchart_Observations.png) |
+| Expected loss value in USD | Observation count |
+
+
+Delinquencies on credit reports (DELINQ) had the highest positive correlation to defaulting at 35%, and credit line age (CLAGE) had the highest negative correlation at -17%. These two are modest correlations at best, so looking into the data further would be essential. Also, we have an imbalance in the number of observations for each job since we have many “Other” and very few “Sales” and “Self.”
+
+
+---
+
+## Comparing Tree Models
+
+
+---
+
+## Comparing Linear Models
+
+---
+
+## Comparing Neural Networks and All Models
+
+---
+
+## Conclusion and future works
+
+---
+
+## Built With
+
+* **Software Packages:**  [Python](https://www.python.org/), [Numpy](https://numpy.org/), [Pandas](https://pandas.pydata.org/docs/), [Scikit Learn](https://scikit-learn.org/), [Tensor Flow](https://www.tensorflow.org/)
+
+## Author
+
+* **Takeshi Sugiyama** - *Data Scientist*
+  * [Linkedin](https://www.linkedin.com/in/takeshi-sugiyama/)
+  * [Tableau](https://public.tableau.com/profile/takeshi.sugiyama)

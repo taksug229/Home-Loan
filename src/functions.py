@@ -640,7 +640,13 @@ def scale_data(X: pd.DataFrame, theScaler: object) -> pd.DataFrame:
 
 
 def plot_bar(
-    df: pd.DataFrame, x: str, y: str, hue: str, title: str, save_img_path: str
+    df: pd.DataFrame,
+    x: str,
+    y: str,
+    hue: str,
+    title: str,
+    save_img_path: str = None,
+    figsize: tuple = figsize,
 ) -> None:
     """Function to save graph
 
@@ -650,15 +656,17 @@ def plot_bar(
         y (str): y variable column for barplot.
         hue (str): hue variable column for barplot.
         title (str): Title for the graph.
-        save_img_path (str): Image save path.
+        save_img_path (str, optional): File path to save the plot as an image. Defaults to None.
+        figsize (tuple, optional): Figure size. Defaults to figsize from config file.
     Returns:
         None
     """
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=figsize)
     a = sns.barplot(ax=ax, x=x, y=y, hue=hue, data=df)
     a.set(title=title)
     a.grid(axis="y")
-    fig.savefig(save_img_path, bbox_inches="tight")
+    if save_img_path:
+        fig.savefig(save_img_path, bbox_inches="tight")
 
 
 def plot_roc(
