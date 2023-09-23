@@ -135,6 +135,7 @@ The stepwise selection method had the best results for the logistic regression (
 | Gradient Boosting | 4 |
 | Stepwise Selection | 10 |
 
+### Linear Regression
 For the linear regression (loss amount) model, the stepwise selection method also performed the best using 10 variables.
 
 | Variable Selection | Variable # | RMSE Train (Error Rate) Mean Loss Amount = $12,255 | RMSE Test (Error Rate) Mean Loss Amount = $11,573 |
@@ -168,6 +169,25 @@ The coefficients in these two functions make sense because all variables are con
 ---
 
 ## Comparing Neural Networks and All Models
+I’ve applied five different models for classification and regression on the HMEQ data— Linear/Logistic Regression (LR), Decision Tree (DT), Random Forest (RF), Gradient Boosting (GB), and Neural Networks created with Tensorflow (TF). I’ve run three different variable selection techniques for each model to compare the results against the model built using all variables. The variable selection is based on the feature importance scores above 0.005 from DT, RF, and GB. On top of the variable selection methods, I’ve compared 12 variations for the TF model by using three different activations, 1 or 2 hidden layers, and with or without dropout layers. In total, I’ve created 64 models for the classification task and another 64 for the regression task. I’ve applied the classification model to asses the default risk of a loan and the regression model to predict the loss amount when the loan defaults.
+
+### Classification Model Comparison
+Applying variable selection methods had positive results for most models for the classification task. The figures below compares the AUC for models with and without variable selections. The best TF model is represented in the figure. The table summarizes the number of variables, best accuracy, and best AUC model.
+
+| ![All vars](img/4-model-comparison/All_vars/ROC-Comparison--ep800-var-All-rs1-md3-ft0.005.png) | ![DT vars](img/4-model-comparison/DT_vars/ROC-Comparison--ep800-var-DT-rs1-md3-ft0.005.png) |
+|:---:|:---:|
+| All variables | Decision Tree Variables |
+| ![RF vars](img/4-model-comparison/RF_vars/ROC-Comparison--ep800-var-RF-rs1-md3-ft0.005.png) | ![GB vars](img/4-model-comparison/GB_vars/ROC-Comparison--ep800-var-GB-rs1-md3-ft0.005.png) |
+| Random Forest Variables | Gradient Boosting Variables |
+
+| Variable Selection | Variable Count | Best Accuracy Model | Best AUC Model |
+| -------- | -------- | -------- | -------- |
+| All | 27 | TF: 0.928 | TF: 0.945 |
+| Decision Tree | 5 | TF: 0.920 | TF: 0.943 |
+| Random Forest | 12 | TF: 0.9228 | TF: 0.944 |
+| Gradient Boosting | 14 | TF: 0.918 | TF: 0.949 |
+
+Overall, TF did the best results in all cases. The model with the best AUC score was the TF model using GB variables. The TF model using less variables, such as DT and RF had similar results with less variables. The LR model using DT variables did pretty well, with only five variables.
 
 ---
 
