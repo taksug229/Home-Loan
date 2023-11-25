@@ -138,7 +138,7 @@ The stepwise selection method had the best results for the logistic regression (
 ### Linear Regression
 For the linear regression (loss amount) model, the stepwise selection method also performed the best using 10 variables.
 
-| Variable Selection | Variable # | RMSE Train (Error Rate) Mean Loss Amount = $12,255 | RMSE Test (Error Rate) Mean Loss Amount = $11,573 |
+| Variable Selection | Variable # | RMSE Train (Error Rate): Mean Loss Amount = $12,255 | RMSE Test (Error Rate): Mean Loss Amount = $11,573 |
 |:---:|:---:|:---:|:---:|
 | All | 27 | $3,226 (26.3%) | $3,362 (29.0%) |
 | Decision Tree | 3 | $4,380 (35.7%) | $4,441 (38.4%) |
@@ -187,7 +187,19 @@ Applying variable selection methods had positive results for most models for the
 | Random Forest | 12 | TF: 0.9228 | TF: 0.944 |
 | Gradient Boosting | 14 | TF: 0.918 | TF: 0.949 |
 
-Overall, TF did the best results in all cases. The model with the best AUC score was the TF model using GB variables. The TF model using less variables, such as DT and RF had similar results with less variables. The LR model using DT variables did pretty well, with only five variables.
+Overall, TF had the best results in all cases. The model with the best AUC score was the TF model using GB variables. The TF model using less variables, such as DT and RF had similar results when using all variables. The LR model using DT variables did fairly well with an AUC of 0.86, using only five variables.
+
+### Regression Model Comparison
+The summary of the RMSE for the loss amount is in Table 2. The error rate is calculated from the mean loss amount of the test data of $11,573. Overall, GB did well in most cases. The DT model using RF variables did pretty well, using only four variables.
+
+| Variable |  | RMSE |  |  |  |  |
+|----------|----------|----------|----------|----------|----------|----------|
+|Selection  | Count | LR | DT | RF | GB | TF |
+| All | 27 |  | | | | |
+| DT | 3 | | | | | |
+| RF | 4 | | | | | |
+| GB | 6 | | | | | |
+
 
 ---
 
