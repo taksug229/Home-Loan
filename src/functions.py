@@ -339,8 +339,12 @@ def process_model(
             cv=cv,
         )
         cv_scores *= -1
-        logger.info(f"{model_name} RMSE Train: {RMSE_TRAIN}")
-        logger.info(f"{model_name} RMSE Test: {RMSE_TEST}")
+        logger.info(
+            f"{model_name} RMSE Train: {RMSE_TRAIN} (Error Ratio: {RMSE_TRAIN/Y_train.mean()})"
+        )
+        logger.info(
+            f"{model_name} RMSE Test: {RMSE_TEST} (Error Ratio: {RMSE_TEST/Y_test.mean()})"
+        )
         logger.info(
             f"{model_name} RMSE Train Cross Validation Average: {np.mean(cv_scores):.2f}"
         )
