@@ -179,7 +179,7 @@ def main():
                 isCat = True
                 if name == "LR":
                     _, result, _ = process_lr_model(
-                        model=LogisticRegression(),
+                        model=model,
                         model_name=name,
                         X_train=X_train,
                         Y_train=Y_train,
@@ -221,7 +221,7 @@ def main():
                 isCat = False
                 if name == "LR":
                     _, result, _ = process_lr_model(
-                        model=LogisticRegression(),
+                        model=model,
                         model_name=name,
                         X_train=XA_train,
                         Y_train=YA_train,
