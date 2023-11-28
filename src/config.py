@@ -24,7 +24,7 @@ figsize = (6, 4)
 # -------- Main Settings --------
 random_state = 1  # Data split random_state.
 cv = 5  # Cross Validation K Folds.
-max_depth = 3  # Depth size for tree models.
+max_depth = 5  # Depth size for tree models.
 feature_thresh = 0.05  # Feature importance threshold for tree models.
 max_step_wise_vars = 10  # Max step wise variables.
 

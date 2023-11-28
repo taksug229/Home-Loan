@@ -161,7 +161,10 @@ def main():
         X_test = X_test.loc[:, importance_feat_class].copy()
         XA_train = XA_train.loc[:, importance_feat_regress].copy()
         XA_test = XA_test.loc[:, importance_feat_regress].copy()
-
+        X_train_tf = X_train_tf.loc[:, importance_feat_class].copy()
+        X_test_tf = X_test_tf.loc[:, importance_feat_class].copy()
+        XA_train_tf = XA_train_tf.loc[:, importance_feat_regress].copy()
+        XA_test_tf = XA_test_tf.loc[:, importance_feat_regress].copy()
     # -------- Plotting Parameters and Labels for ROCAUC --------
     xc = "fpr"
     yc = "tpr"

@@ -294,7 +294,8 @@ def process_model(
             logger.info(f"{model_name} LOSS AMOUNT best parameters = {best_params}")
     else:
         logger.info(f"Using Default Parameters for {model_name}.")
-        model.set_params(**{"max_depth": max_depth})
+        # model.set_params(**{"max_depth": max_depth, "random_state": random_state}) #TODO
+        model.set_params(**{"random_state": random_state})
     model_ = model.fit(X_train, Y_train)
     Y_Pred_train = model_.predict(X_train)
     Y_Pred_test = model_.predict(X_test)
@@ -309,11 +310,11 @@ def process_model(
             p = probs[:, 1]
             fpr, tpr, _ = roc_curve(Y, p)
             roc_auc_result = auc(fpr, tpr)
-            logger.info(f"{model_name} AUC {data_type}: {roc_auc_result:.2f}")
+            logger.info(f"{model_name} AUC {data_type}: {roc_auc_result:.3f}")
             dresult = {"fpr": fpr, "tpr": tpr}
             dft = pd.DataFrame(dresult)
-            dft["label"] = f"AUC {data_type}: {roc_auc_result:.2f}"
-            dft["model_auc"] = f"{model_name} AUC: {roc_auc_result:.2f}"
+            dft["label"] = f"AUC {data_type}: {roc_auc_result:.3f}"
+            dft["model_auc"] = f"{model_name} AUC: {roc_auc_result:.3f}"
             return dft
 
         dftrain = create_results(X_train, Y_train, "Train")
@@ -321,7 +322,7 @@ def process_model(
         result = pd.concat([dftrain, dftest])
         cv_scores = cross_val_score(model_, X_train, Y_train, scoring="roc_auc", cv=cv)
         logger.info(
-            f"{model_name} AUC Train Cross Validation Average: {np.mean(cv_scores):.2f}"
+            f"{model_name} AUC Train Cross Validation Average: {np.mean(cv_scores):.3f}"
         )
     else:
         RMSE_TRAIN = np.sqrt(mean_squared_error(Y_train, Y_Pred_train))
@@ -346,7 +347,7 @@ def process_model(
             f"{model_name} RMSE Test: {RMSE_TEST} (Error Ratio: {RMSE_TEST/Y_test.mean()})"
         )
         logger.info(
-            f"{model_name} RMSE Train Cross Validation Average: {np.mean(cv_scores):.2f}"
+            f"{model_name} RMSE Train Cross Validation Average: {np.mean(cv_scores):.3f}"
         )
 
     importance_df = pd.DataFrame(
@@ -404,11 +405,11 @@ def process_lr_model(
             p = probs[:, 1]
             fpr, tpr, _ = roc_curve(Y, p)
             roc_auc_result = auc(fpr, tpr)
-            logger.info(f"{model_name} variables AUC {data_type}: {roc_auc_result:.2f}")
+            logger.info(f"{model_name} variables AUC {data_type}: {roc_auc_result:.3f}")
             dresult = {"fpr": fpr, "tpr": tpr}
             dft = pd.DataFrame(dresult)
-            dft["label"] = f"AUC {data_type}: {roc_auc_result:.2f}"
-            dft["model_auc"] = f"{model_name} variables AUC: {roc_auc_result:.2f}"
+            dft["label"] = f"AUC {data_type}: {roc_auc_result:.3f}"
+            dft["model_auc"] = f"{model_name} AUC: {roc_auc_result:.3f}"
             return dft
 
         dftrain = create_results(X_train, Y_train, "Train")

@@ -190,14 +190,14 @@ Applying variable selection methods had positive results for most models for the
 Overall, TF had the best results in all cases. The model with the best AUC score was the TF model using GB variables. The TF model using less variables, such as DT and RF had similar results when using all variables. The LR model using DT variables did fairly well with an AUC of 0.86, using only five variables.
 
 ### Regression Model Comparison
-The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB did well in most cases. The DT model using RF variables did pretty well, using only four variables.
+The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB and TF did well in most cases.
 
 |Variable Selection  | Variable Count | RMSE: LR | RMSE: DT | RMSE: RF | RMSE: GB | RMSE: TF |
 |----------|----------|----------|----------|----------|----------|----------|
-| All | 27 | $3,362 (29.0%)  | $4,545 (39.3%) | $3,853 (33.3%) | $1,933 (16.7%) | $2,912 (25.2%) |
-| DT | 3 | $4,441 (38.4%) | $4,545 (39.3%) | $4,059 (35.1%) | $2,911 (25.2%) | $2,334 (20.2%) |
-| RF | 4 | $3,948 (34.1%) | $4,545 (39.3%) | $3,918 (33.9%)| $2,421 (20.9%) | $2,333 (20.2%) |
-| GB | 8 | $3,391 (29.3%) | $4,545 (39.3%) | $3,910 (33.8%) | $1,944 (16.8%) | $3,067 (26.5%) |
+| All | 27 | $3,362 (29.0%)  | $4,545 (39.3%) | $3,853 (33.3%) | **$1,933 (16.7%)** | $2,912 (25.2%) |
+| DT | 3 | $4,441 (38.4%) | $4,545 (39.3%) | $4,059 (35.1%) | $2,911 (25.2%) | **$2,334 (20.2%)** |
+| RF | 4 | $3,948 (34.1%) | $4,545 (39.3%) | $3,918 (33.9%)| $2,421 (20.9%) | **$2,333 (20.2%)** |
+| GB | 8 | $3,391 (29.3%) | $4,545 (39.3%) | $3,910 (33.8%) | **$1,944 (16.8%)** | $3,067 (26.5%) |
 
 
 ---
