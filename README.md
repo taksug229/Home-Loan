@@ -174,30 +174,31 @@ I’ve applied five different models for classification and regression on the HM
 ### Classification Model Comparison
 Applying variable selection methods had positive results for most models for the classification task. The figures below compares the AUC for models with and without variable selections. The best TF model is represented in the figure. The table summarizes the number of variables, best accuracy, and best AUC model.
 
-| ![All vars](img/4-model-comparison/All_vars/ROC-Comparison--ep800-var-All-rs1-md3-ft0.005.png) | ![DT vars](img/4-model-comparison/DT_vars/ROC-Comparison--ep800-var-DT-rs1-md3-ft0.005.png) |
+| ![All vars](img/4-model-comparison/All_vars/ROC-Comparison--ep800-var-All-rs1-md5-ft0.005.png) | ![DT vars](img/4-model-comparison/DT_vars/ROC-Comparison--ep800-var-DT-rs1-md5-ft0.005.png) |
 |:---:|:---:|
 | All variables | Decision Tree Variables |
-| ![RF vars](img/4-model-comparison/RF_vars/ROC-Comparison--ep800-var-RF-rs1-md3-ft0.005.png) | ![GB vars](img/4-model-comparison/GB_vars/ROC-Comparison--ep800-var-GB-rs1-md3-ft0.005.png) |
+| ![RF vars](img/4-model-comparison/RF_vars/ROC-Comparison--ep800-var-RF-rs1-md5-ft0.005.png) | ![GB vars](img/4-model-comparison/GB_vars/ROC-Comparison--ep800-var-GB-rs1-md5-ft0.005.png) |
 | Random Forest Variables | Gradient Boosting Variables |
 
 | Variable Selection | Variable Count | Best Accuracy Model | Best AUC Model |
 | -------- | -------- | -------- | -------- |
-| All | 27 | TF: 0.928 | TF: 0.945 |
-| Decision Tree | 5 | TF: 0.920 | TF: 0.943 |
-| Random Forest | 12 | TF: 0.9228 | TF: 0.944 |
-| Gradient Boosting | 14 | TF: 0.918 | TF: 0.949 |
+| All | 27 | RF: 0.922 | RF: 0.970 |
+| Decision Tree | 11 | RF: 0.906 | RF: 0.935 |
+| Random Forest | 13 | TF: 0.905 | GB: 0.924 |
+| Gradient Boosting | 17 | RF: 0.911 | RF: 0.957 |
 
-Overall, TF had the best results in all cases. The model with the best AUC score was the TF model using GB variables. The TF model using less variables, such as DT and RF had similar results when using all variables. The LR model using DT variables did fairly well with an AUC of 0.86, using only five variables.
+Overall, RF had the best results in most cases. The model with the best AUC score was the RF model using all variables. The RF model using less variables, such as GB, had similar results when using all variables.
 
 ### Regression Model Comparison
-The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB and TF did well in most cases.
+The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB performed the best in all cases. The simple DT model using RF variables did fairly well, using only 8 variables.
+
 
 |Variable Selection  | Variable Count | RMSE: LR | RMSE: DT | RMSE: RF | RMSE: GB | RMSE: TF |
 |----------|----------|----------|----------|----------|----------|----------|
-| All | 27 | $3,362 (29.0%)  | $4,545 (39.3%) | $3,853 (33.3%) | **$1,933 (16.7%)** | $2,912 (25.2%) |
-| DT | 3 | $4,441 (38.4%) | $4,545 (39.3%) | $4,059 (35.1%) | $2,911 (25.2%) | **$2,334 (20.2%)** |
-| RF | 4 | $3,948 (34.1%) | $4,545 (39.3%) | $3,918 (33.9%)| $2,421 (20.9%) | **$2,333 (20.2%)** |
-| GB | 8 | $3,391 (29.3%) | $4,545 (39.3%) | $3,910 (33.8%) | **$1,944 (16.8%)** | $3,067 (26.5%) |
+| All | 27 | $3,362 (29.0%) | $3,191 (27.5%) | $2,251 (19.4%) | **$1,936 (16.7%)** | $2,811 (24.3%) |
+| DT | 7 | $3,762 (32.5%) | $3,356 (29.0%) | $2,241 (19.4%) | **$2,091 (18.1%)** | $3,581 (30.9%) |
+| RF | 8 | $3,600 (31.1%) | $2,790 (24.1%) | $2,859 (24.7%)| **$2,043 (17.7%)** | $2,333 (20.2%) |
+| GB | 9 | $3,408 (29.4%) | $2,763 (23.9%) | $2,139 (18.5%) | **$1,654 (14.3%)** | $3,370 (29.1%) |
 
 
 ---
