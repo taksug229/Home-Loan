@@ -191,23 +191,23 @@ Applying variable selection methods had positive results for most models for the
 
 | Variable Selection | Variable Count | Best Accuracy Model | Best AUC Model |
 | -------- | -------- | -------- | -------- |
-| All | 27 | RF: 0.922 | RF: 0.970 |
-| Decision Tree | 11 | RF: 0.906 | RF: 0.935 |
-| Random Forest | 13 | TF: 0.905 | GB: 0.924 |
-| Gradient Boosting | 17 | RF: 0.911 | RF: 0.957 |
+| All | 27 | TF: 0.924 | RF: 0.943 |
+| Decision Tree | 11 | GB: 0.905 | TF: 0.921 |
+| Random Forest | 13 | TF: 0.911 | GB: 0.931 |
+| Gradient Boosting | 17 | RF: 0.910 | GB: 0.943 |
 
-Overall, RF had the best results in most cases. The model with the best AUC score was the RF model using all variables. The RF model using less variables, such as GB, had similar results when using all variables.
+Overall, GB and TF had the best results in most cases. The model with the best AUC score was the RF model using all variables. The GB model using less variables, such as GB, had similar results when using all variables.
 
 ### Regression Model Comparison
-The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB performed the best in all cases. The simple DT model using RF variables did fairly well, using only 8 variables.
+The summary of the RMSE for the loss amount is in the table below. The error rate are in parenthesis and is calculated from the mean loss amount of the test data of $11,573. Overall, GB performed the best in all cases.
 
 
 |Variable Selection  | Variable Count | RMSE: LR | RMSE: DT | RMSE: RF | RMSE: GB | RMSE: TF |
 |----------|----------|----------|----------|----------|----------|----------|
-| All | 27 | $3,362 (29.0%) | $3,191 (27.5%) | $2,251 (19.4%) | **$1,936 (16.7%)** | $2,811 (24.3%) |
-| DT | 7 | $3,762 (32.5%) | $3,356 (29.0%) | $2,241 (19.4%) | **$2,091 (18.1%)** | $3,581 (30.9%) |
-| RF | 8 | $3,600 (31.1%) | $2,790 (24.1%) | $2,859 (24.7%)| **$2,043 (17.7%)** | $2,333 (20.2%) |
-| GB | 9 | $3,408 (29.4%) | $2,763 (23.9%) | $2,139 (18.5%) | **$1,654 (14.3%)** | $3,370 (29.1%) |
+| All | 27 | $3,362 (29.0%) | $3,365 (29.1%) | $2,894 (25.0%) | **$1,610 (13.9%)** | $2,793 (24.1%) |
+| DT | 7 | $3,762 (32.5%) | $3,356 (29.0%) | $2,823 (24.4%) | **$1,931 (16.7%)** | $3,729 (32.2%) |
+| RF | 8 | $3,600 (31.1%) | $3,365 (29.1%) | $2,859 (24.7%)| **$1,818 (15.7%)** | $3,113 (26.9%) |
+| GB | 9 | $3,408 (29.4%) | $3,365 (29.1%) | $2,866 (24.8%) | **$1,654 (14.3%)** | $3,100 (26.8%) |
 
 
 ---

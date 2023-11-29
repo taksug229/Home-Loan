@@ -745,8 +745,19 @@ def plot_decision_tree(
     save_img_path: str = None,
     figsize: tuple = (30, 8),  # (150, 12)
 ) -> None:
+    """
+    Plots the decision tree of a scikit-learn model.
+
+    Parameters:
+    - model (BaseEstimator): The scikit-learn decision tree model.
+    - feature_names (list): A list of feature names.
+    - save_img_path (str, optional): The path to save the plotted tree image. If None, the image is not saved.
+    - figsize (tuple, optional): A tuple specifying the figure size (width, height) in inches. Default is (30, 8).
+
+    Returns:
+    - None
+    """
     fig, ax = plt.subplots(figsize=figsize)
     tree.plot_tree(model, feature_names=feature_names, filled=True, ax=ax, rounded=True)
     if save_img_path:
         fig.savefig(save_img_path, bbox_inches="tight")
-        # plt.close(fig)

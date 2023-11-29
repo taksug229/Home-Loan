@@ -1,0 +1,340 @@
+2023-11-29 14:08:51: INFO: Total NaN values in each row.
+2023-11-29 14:08:51: INFO: NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default.
+2023-11-29 14:08:51: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+MORTDUE             518
+VALUE               112
+REASON              252
+JOB                 279
+YOJ                 515
+DEROG               708
+DELINQ              580
+CLAGE               308
+NINQ                510
+CLNO                222
+DEBTINC            1267
+2023-11-29 14:08:51: INFO: Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values.
+2023-11-29 14:08:51: INFO: 
+                 TARGET_BAD_FLAG  TARGET_LOSS_AMT     LOAN     MORTDUE     VALUE    YOJ  DEROG  DELINQ       CLAGE  NINQ  CLNO    DEBTINC
+REASON  JOB                                                                                                                              
+DebtCon Mgr                  0.0          14360.0  19450.0   76600.000   99025.5   8.00    0.0     0.0  175.570979   1.0  23.0  36.290354
+        Office               0.0          13453.0  17900.0   63744.000   90810.5   5.00    0.0     0.0  167.657981   1.0  22.0  36.099281
+        Other                0.0          12124.0  18000.0   54653.000   77519.0   8.00    0.0     0.0  152.202235   1.0  19.0  35.730559
+        ProfExe              0.0          15237.0  18500.0   83149.500  113083.5   8.00    0.0     0.0  190.800000   1.0  25.0  33.591086
+        Sales                0.0          16656.0  15200.0   74392.500   87446.5   4.00    0.0     0.0  141.268671   0.0  23.0  35.033102
+        Self                 0.0          19324.0  23400.0  101250.000  125252.0   5.00    0.0     0.0  178.951539   1.0  24.0  34.554127
+        NaN                  0.0          14756.0  11100.0   59701.500   80037.0   5.00    0.0     0.0  129.896035   1.0  16.0  31.626822
+HomeImp Mgr                  0.0           6533.5  13250.0   74013.000  102377.5   8.00    0.0     0.0  162.637297   0.0  21.0  33.200548
+        Office               0.0           5817.0  12000.0   62200.000   80147.0  10.00    0.0     0.0  175.082704   0.0  17.5  35.949877
+        Other                0.0           4572.0  10800.0   53812.500   73319.0   7.00    0.0     0.0  168.666667   0.0  15.0  34.485533
+        ProfExe              0.0           6934.0  14900.0   82889.500  107442.5   7.00    0.0     0.0  177.854846   0.0  22.0  32.870335
+        Sales                0.0           3870.0   5500.0   70793.000   70735.0   4.00    1.0     0.0  156.625882   0.0  23.0  40.442569
+        Self                 0.0          17239.0  24000.0   78943.500  167020.0   7.00    0.0     0.0  192.226177   1.0  21.0  35.871959
+        NaN                  0.0          12251.5  21900.0   85337.000  100147.0   8.00    0.0     0.0  142.147140   0.0  13.0  31.203189
+NaN     Mgr                  0.0          14283.0  20000.0  111000.000  168708.0  13.00    0.0     4.0  249.242763   1.0  27.0  32.698229
+        Office               0.0              NaN  15500.0   25751.000   44461.0   2.00    0.0     0.0  211.033333   0.0  16.0  37.816428
+        Other                0.0          11471.0  16100.0   67371.305   95085.0  12.00    0.0     0.0  246.918710   0.0  19.0  31.183363
+        ProfExe              0.0          10107.5  18500.0   62772.000   90031.0   6.50    0.0     0.0  108.136393   1.0  17.5  27.740432
+        Self                 1.0          28095.0  27700.0   61396.000  111627.0   5.00    0.0     1.0  101.466667   1.0  28.0  84.613889
+        NaN                  0.0           5312.0  13300.0   47811.000   72583.0   0.95    0.0     0.0  118.976063   0.0   0.0  23.988913
+2023-11-29 14:08:51: INFO: Impute missing values START.
+2023-11-29 14:08:51: INFO: Impute missing categorical values to 'Unknwon'.
+2023-11-29 14:08:51: INFO: Add new column for flag and imputed numbers.
+2023-11-29 14:08:51: INFO: The NaNs will be imputed by the median of per Job and Reason.
+2023-11-29 14:08:51: INFO: The original imputed columns will be deleted.
+2023-11-29 14:08:51: INFO: Impute missing values END.
+2023-11-29 14:08:51: INFO: First 5 observations of the imputed data
+2023-11-29 14:08:51: INFO: 
+                         0           1           2       3          4
+TARGET_BAD_FLAG          1           1           1       1          0
+TARGET_LOSS_AMT      641.0      1109.0       767.0  1425.0        NaN
+LOAN                  1100        1300        1500    1500       1700
+MORTDUE            25860.0     70053.0     13500.0     NaN    97800.0
+VALUE              39025.0     68400.0     16700.0     NaN   112000.0
+REASON             HomeImp     HomeImp     HomeImp     NaN    HomeImp
+JOB                  Other       Other       Other     NaN     Office
+YOJ                   10.5         7.0         4.0     NaN        3.0
+DEROG                  0.0         0.0         0.0     NaN        0.0
+DELINQ                 0.0         2.0         0.0     NaN        0.0
+CLAGE            94.366667  121.833333  149.466667     NaN  93.333333
+NINQ                   1.0         0.0         1.0     NaN        0.0
+CLNO                   9.0        14.0        10.0     NaN       14.0
+DEBTINC                NaN         NaN         NaN     NaN        NaN
+2023-11-29 14:08:51: INFO: Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)
+2023-11-29 14:08:51: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+REASON                0
+JOB                   0
+M_MORTDUE             0
+IMP_MORTDUE           0
+M_VALUE               0
+IMP_VALUE             0
+M_YOJ                 0
+IMP_YOJ               0
+M_DEROG               0
+IMP_DEROG             0
+M_DELINQ              0
+IMP_DELINQ            0
+M_CLAGE               0
+IMP_CLAGE             0
+M_NINQ                0
+IMP_NINQ              0
+M_CLNO                0
+IMP_CLNO              0
+M_DEBTINC             0
+IMP_DEBTINC           0
+2023-11-29 14:08:51: INFO: Creating dummy variables for categorical columns
+2023-11-29 14:08:51: INFO: Completed creating dummy variables
+2023-11-29 14:08:51: INFO: First 5 observations of the data with dummy variables
+2023-11-29 14:08:51: INFO: 
+   TARGET_BAD_FLAG  TARGET_LOSS_AMT  LOAN  M_MORTDUE  IMP_MORTDUE  M_VALUE  IMP_VALUE  M_YOJ  IMP_YOJ  M_DEROG  IMP_DEROG  M_DELINQ  IMP_DELINQ  M_CLAGE   IMP_CLAGE  M_NINQ  IMP_NINQ  M_CLNO  IMP_CLNO  M_DEBTINC  IMP_DEBTINC  z_REASON_DebtCon  z_REASON_HomeImp  z_JOB_Mgr  z_JOB_Office  z_JOB_Other  z_JOB_ProfExe  z_JOB_Sales  z_JOB_Self
+0                1            641.0  1100          0      25860.0        0    39025.0      0    10.50        0        0.0         0         0.0        0   94.366667       0       1.0       0       9.0          1    34.485533                 0                 1          0             0            1              0            0           0
+1                1           1109.0  1300          0      70053.0        0    68400.0      0     7.00        0        0.0         0         2.0        0  121.833333       0       0.0       0      14.0          1    34.485533                 0                 1          0             0            1              0            0           0
+2                1            767.0  1500          0      13500.0        0    16700.0      0     4.00        0        0.0         0         0.0        0  149.466667       0       1.0       0      10.0          1    34.485533                 0                 1          0             0            1              0            0           0
+3                1           1425.0  1500          1      47811.0        1    72583.0      1     0.95        1        0.0         1         0.0        1  118.976063       1       0.0       1       0.0          1    23.988913                 0                 0          0             0            0              0            0           0
+4                0              NaN  1700          0      97800.0        0   112000.0      0     3.00        0        0.0         0         0.0        0   93.333333       0       0.0       0      14.0          1    35.949877                 0                 1          0             1            0              0            0           0
+2023-11-29 14:08:51: INFO: LOSS AMOUNT statistics BEFORE capping
+2023-11-29 14:08:51: INFO: 
+count     1189.000000
+mean     13414.576955
+std      10839.455965
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      78987.000000
+2023-11-29 14:08:51: INFO: LOSS AMOUNT statistics AFTER capping
+2023-11-29 14:08:51: INFO: 
+count     1189.000000
+mean     12118.188394
+std       7574.544843
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      25000.000000
+2023-11-29 14:08:51: INFO: Data Split
+2023-11-29 14:08:51: INFO: FLAG DATA
+2023-11-29 14:08:51: INFO: TRAINING = (4768, 27)
+2023-11-29 14:08:51: INFO: TEST = (1192, 27)
+2023-11-29 14:08:51: INFO: LOSS AMOUNT DATA
+2023-11-29 14:08:51: INFO: TRAINING = (951,)
+2023-11-29 14:08:51: INFO: TEST = (238,)
+2023-11-29 14:08:51: INFO: 
+count      951.000000
+mean     12254.549947
+std       7625.029926
+min        224.000000
+25%       5781.000000
+50%      11122.000000
+75%      18082.000000
+max      25000.000000
+2023-11-29 14:08:51: INFO: 
+count      238.000000
+mean     11573.315126
+std       7359.835410
+min        320.000000
+25%       5025.500000
+50%      10390.000000
+75%      16489.500000
+max      25000.000000
+2023-11-29 14:08:51: INFO: Variables Selection enabled for GB
+2023-11-29 14:08:52: INFO: Important Variables Count from GB Categorical: 17
+2023-11-29 14:08:52: INFO: Important Variables from GB Categorical: Index(['LOAN', 'IMP_MORTDUE', 'M_VALUE', 'IMP_VALUE', 'M_YOJ', 'IMP_YOJ',
+       'M_DEROG', 'IMP_DEROG', 'IMP_DELINQ', 'M_CLAGE', 'IMP_CLAGE',
+       'IMP_NINQ', 'IMP_CLNO', 'M_DEBTINC', 'IMP_DEBTINC', 'z_JOB_Office',
+       'z_JOB_Other'],
+      dtype='object')
+2023-11-29 14:08:53: INFO: Important Variables from GB Regression: 9
+2023-11-29 14:08:53: INFO: Important Variables from GB Regression: Index(['LOAN', 'IMP_MORTDUE', 'IMP_YOJ', 'IMP_DELINQ', 'IMP_CLAGE', 'IMP_CLNO',
+       'M_DEBTINC', 'IMP_DEBTINC', 'z_REASON_HomeImp'],
+      dtype='object')
+2023-11-29 14:08:53: INFO: LR Categorical
+2023-11-29 14:08:53: INFO: Using Features from LR.
+2023-11-29 14:08:53: INFO: LR variables Accuracy Train: 0.8423
+2023-11-29 14:08:53: INFO: LR variables  Accuracy Test:: 0.8221
+2023-11-29 14:08:53: INFO: LR variables AUC Train: 0.791
+2023-11-29 14:08:53: INFO: LR variables AUC Test: 0.782
+2023-11-29 14:08:53: INFO: LR AUC Train Cross Validation Average: 0.66
+2023-11-29 14:09:04: INFO: ------------------------------------
+2023-11-29 14:09:04: INFO: LR Regression
+2023-11-29 14:09:04: INFO: Using Features from LR.
+2023-11-29 14:09:04: INFO: LR MEAN Train: 12254.549947423764
+2023-11-29 14:09:04: INFO: LR MEAN Test: 11573.31512605042
+2023-11-29 14:09:04: INFO: LR RMSE Train: 3395.1860480558285 (Error Ratio: 0.27705513973359647)
+2023-11-29 14:09:04: INFO: LR RMSE Test: 3407.703200073292 (Error Ratio: 0.29444486415157567)
+2023-11-29 14:09:04: INFO: LR RMSE Train Cross Validation Average: 3502.86 (Error Ratio: 0.28584118496550115)
+2023-11-29 14:09:04: INFO: ------------------------------------
+2023-11-29 14:09:04: INFO: DT Categorical
+2023-11-29 14:09:04: INFO: Using Default Parameters for DT.
+2023-11-29 14:09:04: INFO: DT Accuracy Train: 0.8970
+2023-11-29 14:09:04: INFO: DT Accuracy Test:: 0.8859
+2023-11-29 14:09:04: INFO: DT AUC Train: 0.873
+2023-11-29 14:09:04: INFO: DT AUC Test: 0.823
+2023-11-29 14:09:04: INFO: DT AUC Train Cross Validation Average: 0.858
+2023-11-29 14:09:05: INFO: ------------------------------------
+2023-11-29 14:09:05: INFO: DT Regression
+2023-11-29 14:09:05: INFO: Using Default Parameters for DT.
+2023-11-29 14:09:05: INFO: DT MEAN Train: 12254.549947423764
+2023-11-29 14:09:05: INFO: DT MEAN Test: 11573.31512605042
+2023-11-29 14:09:05: INFO: DT RMSE Train: 2796.336711058568 (Error Ratio: 0.2281876301500924)
+2023-11-29 14:09:05: INFO: DT RMSE Test: 3365.213872489947 (Error Ratio: 0.29077354550859624)
+2023-11-29 14:09:05: INFO: DT RMSE Train Cross Validation Average: 3657.523
+2023-11-29 14:09:05: INFO: ------------------------------------
+2023-11-29 14:09:05: INFO: RF Categorical
+2023-11-29 14:09:05: INFO: Using Default Parameters for RF.
+2023-11-29 14:09:05: INFO: RF Accuracy Train: 0.8993
+2023-11-29 14:09:05: INFO: RF Accuracy Test:: 0.8842
+2023-11-29 14:09:05: INFO: RF AUC Train: 0.933
+2023-11-29 14:09:05: INFO: RF AUC Test: 0.910
+2023-11-29 14:09:07: INFO: RF AUC Train Cross Validation Average: 0.920
+2023-11-29 14:09:13: INFO: ------------------------------------
+2023-11-29 14:09:13: INFO: RF Regression
+2023-11-29 14:09:13: INFO: Using Default Parameters for RF.
+2023-11-29 14:09:13: INFO: RF MEAN Train: 12254.549947423764
+2023-11-29 14:09:13: INFO: RF MEAN Test: 11573.31512605042
+2023-11-29 14:09:14: INFO: RF RMSE Train: 2278.322861351571 (Error Ratio: 0.18591648580538334)
+2023-11-29 14:09:14: INFO: RF RMSE Test: 2865.7667554896843 (Error Ratio: 0.2476184847882625)
+2023-11-29 14:09:14: INFO: RF RMSE Train Cross Validation Average: 2891.446
+2023-11-29 14:09:14: INFO: ------------------------------------
+2023-11-29 14:09:14: INFO: GB Categorical
+2023-11-29 14:09:14: INFO: Using Default Parameters for GB.
+2023-11-29 14:09:15: INFO: GB Accuracy Train: 0.9618
+2023-11-29 14:09:15: INFO: GB Accuracy Test:: 0.9102
+2023-11-29 14:09:15: INFO: GB AUC Train: 0.990
+2023-11-29 14:09:15: INFO: GB AUC Test: 0.943
+2023-11-29 14:09:20: INFO: GB AUC Train Cross Validation Average: 0.947
+2023-11-29 14:09:23: INFO: ------------------------------------
+2023-11-29 14:09:23: INFO: GB Regression
+2023-11-29 14:09:23: INFO: Using Default Parameters for GB.
+2023-11-29 14:09:24: INFO: GB MEAN Train: 12254.549947423764
+2023-11-29 14:09:24: INFO: GB MEAN Test: 11573.31512605042
+2023-11-29 14:09:24: INFO: GB RMSE Train: 494.83957776335484 (Error Ratio: 0.040380069434323325)
+2023-11-29 14:09:24: INFO: GB RMSE Test: 1653.6965125167928 (Error Ratio: 0.14288874834095555)
+2023-11-29 14:09:24: INFO: GB RMSE Train Cross Validation Average: 2052.455
+2023-11-29 14:09:24: INFO: ------------------------------------
+2023-11-29 14:09:35: INFO: TF-Relu-hl-1-do-True-ep-100 Accuracy Train: 0.9046
+2023-11-29 14:09:35: INFO: TF-Relu-hl-1-do-True-ep-100 Accuracy Test: 0.8960
+2023-11-29 14:09:35: INFO: TF-Relu-hl-1-do-True-ep-100 AUC Train: 0.933
+2023-11-29 14:09:35: INFO: TF-Relu-hl-1-do-True-ep-100 AUC Test: 0.910
+2023-11-29 14:09:42: INFO: ------------------------------------
+2023-11-29 14:09:59: INFO: TF-Relu-hl-1-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:09:59: INFO: TF-Relu-hl-1-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:09:59: INFO: TF-Relu-hl-1-do-True-ep-800 RMSE Train: 6362.32832206514 (Error Ratio: 0.5191809041834843)
+2023-11-29 14:09:59: INFO: TF-Relu-hl-1-do-True-ep-800 RMSE Test: 5892.442024887772 (Error Ratio: 0.5091403768678563)
+2023-11-29 14:09:59: INFO: ------------------------------------
+2023-11-29 14:10:10: INFO: TF-Relu-hl-1-do-False-ep-100 Accuracy Train: 0.9132
+2023-11-29 14:10:10: INFO: TF-Relu-hl-1-do-False-ep-100 Accuracy Test: 0.9002
+2023-11-29 14:10:10: INFO: TF-Relu-hl-1-do-False-ep-100 AUC Train: 0.940
+2023-11-29 14:10:10: INFO: TF-Relu-hl-1-do-False-ep-100 AUC Test: 0.913
+2023-11-29 14:10:16: INFO: ------------------------------------
+2023-11-29 14:10:33: INFO: TF-Relu-hl-1-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:10:33: INFO: TF-Relu-hl-1-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:10:33: INFO: TF-Relu-hl-1-do-False-ep-800 RMSE Train: 6499.447619634904 (Error Ratio: 0.5303701602686162)
+2023-11-29 14:10:33: INFO: TF-Relu-hl-1-do-False-ep-800 RMSE Test: 6050.317497225246 (Error Ratio: 0.5227817121825848)
+2023-11-29 14:10:33: INFO: ------------------------------------
+2023-11-29 14:10:44: INFO: TF-Relu-hl-2-do-True-ep-100 Accuracy Train: 0.9243
+2023-11-29 14:10:44: INFO: TF-Relu-hl-2-do-True-ep-100 Accuracy Test: 0.9069
+2023-11-29 14:10:45: INFO: TF-Relu-hl-2-do-True-ep-100 AUC Train: 0.961
+2023-11-29 14:10:45: INFO: TF-Relu-hl-2-do-True-ep-100 AUC Test: 0.930
+2023-11-29 14:10:50: INFO: ------------------------------------
+2023-11-29 14:11:09: INFO: TF-Relu-hl-2-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:11:09: INFO: TF-Relu-hl-2-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:11:09: INFO: TF-Relu-hl-2-do-True-ep-800 RMSE Train: 3395.405094048081 (Error Ratio: 0.2770730144000014)
+2023-11-29 14:11:09: INFO: TF-Relu-hl-2-do-True-ep-800 RMSE Test: 3370.1042843130936 (Error Ratio: 0.2911961047986426)
+2023-11-29 14:11:09: INFO: ------------------------------------
+2023-11-29 14:11:20: INFO: TF-Relu-hl-2-do-False-ep-100 Accuracy Train: 0.9274
+2023-11-29 14:11:20: INFO: TF-Relu-hl-2-do-False-ep-100 Accuracy Test: 0.9086
+2023-11-29 14:11:20: INFO: TF-Relu-hl-2-do-False-ep-100 AUC Train: 0.960
+2023-11-29 14:11:20: INFO: TF-Relu-hl-2-do-False-ep-100 AUC Test: 0.927
+2023-11-29 14:11:26: INFO: ------------------------------------
+2023-11-29 14:11:44: INFO: TF-Relu-hl-2-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:11:44: INFO: TF-Relu-hl-2-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:11:44: INFO: TF-Relu-hl-2-do-False-ep-800 RMSE Train: 3139.466569091127 (Error Ratio: 0.25618783085144037)
+2023-11-29 14:11:44: INFO: TF-Relu-hl-2-do-False-ep-800 RMSE Test: 3099.607039574358 (Error Ratio: 0.26782361024607726)
+2023-11-29 14:11:44: INFO: ------------------------------------
+2023-11-29 14:11:54: INFO: TF-Sigmoid-hl-1-do-True-ep-100 Accuracy Train: 0.8849
+2023-11-29 14:11:54: INFO: TF-Sigmoid-hl-1-do-True-ep-100 Accuracy Test: 0.8859
+2023-11-29 14:11:54: INFO: TF-Sigmoid-hl-1-do-True-ep-100 AUC Train: 0.908
+2023-11-29 14:11:54: INFO: TF-Sigmoid-hl-1-do-True-ep-100 AUC Test: 0.890
+2023-11-29 14:12:02: INFO: ------------------------------------
+2023-11-29 14:12:20: INFO: TF-Sigmoid-hl-1-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:12:20: INFO: TF-Sigmoid-hl-1-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:12:20: INFO: TF-Sigmoid-hl-1-do-True-ep-800 RMSE Train: 14046.46706495891 (Error Ratio: 1.1462246369897782)
+2023-11-29 14:12:20: INFO: TF-Sigmoid-hl-1-do-True-ep-800 RMSE Test: 13324.818201699316 (Error Ratio: 1.1513397895566182)
+2023-11-29 14:12:20: INFO: ------------------------------------
+2023-11-29 14:12:30: INFO: TF-Sigmoid-hl-1-do-False-ep-100 Accuracy Train: 0.8878
+2023-11-29 14:12:30: INFO: TF-Sigmoid-hl-1-do-False-ep-100 Accuracy Test: 0.8842
+2023-11-29 14:12:31: INFO: TF-Sigmoid-hl-1-do-False-ep-100 AUC Train: 0.911
+2023-11-29 14:12:31: INFO: TF-Sigmoid-hl-1-do-False-ep-100 AUC Test: 0.890
+2023-11-29 14:12:39: INFO: ------------------------------------
+2023-11-29 14:12:56: INFO: TF-Sigmoid-hl-1-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:12:56: INFO: TF-Sigmoid-hl-1-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:12:56: INFO: TF-Sigmoid-hl-1-do-False-ep-800 RMSE Train: 14043.70030791583 (Error Ratio: 1.145998863129869)
+2023-11-29 14:12:56: INFO: TF-Sigmoid-hl-1-do-False-ep-800 RMSE Test: 13322.070004841398 (Error Ratio: 1.151102329777118)
+2023-11-29 14:12:56: INFO: ------------------------------------
+2023-11-29 14:13:07: INFO: TF-Sigmoid-hl-2-do-True-ep-100 Accuracy Train: 0.8867
+2023-11-29 14:13:07: INFO: TF-Sigmoid-hl-2-do-True-ep-100 Accuracy Test: 0.8842
+2023-11-29 14:13:07: INFO: TF-Sigmoid-hl-2-do-True-ep-100 AUC Train: 0.908
+2023-11-29 14:13:07: INFO: TF-Sigmoid-hl-2-do-True-ep-100 AUC Test: 0.888
+2023-11-29 14:13:15: INFO: ------------------------------------
+2023-11-29 14:13:35: INFO: TF-Sigmoid-hl-2-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:13:35: INFO: TF-Sigmoid-hl-2-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:13:35: INFO: TF-Sigmoid-hl-2-do-True-ep-800 RMSE Train: 14059.71324836114 (Error Ratio: 1.1473055566040489)
+2023-11-29 14:13:35: INFO: TF-Sigmoid-hl-2-do-True-ep-800 RMSE Test: 13337.975833949587 (Error Ratio: 1.1524766835327145)
+2023-11-29 14:13:35: INFO: ------------------------------------
+2023-11-29 14:13:46: INFO: TF-Sigmoid-hl-2-do-False-ep-100 Accuracy Train: 0.8884
+2023-11-29 14:13:46: INFO: TF-Sigmoid-hl-2-do-False-ep-100 Accuracy Test: 0.8792
+2023-11-29 14:13:47: INFO: TF-Sigmoid-hl-2-do-False-ep-100 AUC Train: 0.912
+2023-11-29 14:13:47: INFO: TF-Sigmoid-hl-2-do-False-ep-100 AUC Test: 0.891
+2023-11-29 14:13:55: INFO: ------------------------------------
+2023-11-29 14:14:12: INFO: TF-Sigmoid-hl-2-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:14:12: INFO: TF-Sigmoid-hl-2-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:14:12: INFO: TF-Sigmoid-hl-2-do-False-ep-800 RMSE Train: 14052.60645090086 (Error Ratio: 1.1467256252731741)
+2023-11-29 14:14:12: INFO: TF-Sigmoid-hl-2-do-False-ep-800 RMSE Test: 13330.916485964803 (Error Ratio: 1.1518667158693527)
+2023-11-29 14:14:12: INFO: ------------------------------------
+2023-11-29 14:14:23: INFO: TF-Tanh-hl-1-do-True-ep-100 Accuracy Train: 0.8943
+2023-11-29 14:14:23: INFO: TF-Tanh-hl-1-do-True-ep-100 Accuracy Test: 0.8901
+2023-11-29 14:14:23: INFO: TF-Tanh-hl-1-do-True-ep-100 AUC Train: 0.913
+2023-11-29 14:14:23: INFO: TF-Tanh-hl-1-do-True-ep-100 AUC Test: 0.891
+2023-11-29 14:14:31: INFO: ------------------------------------
+2023-11-29 14:14:48: INFO: TF-Tanh-hl-1-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:14:48: INFO: TF-Tanh-hl-1-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:14:48: INFO: TF-Tanh-hl-1-do-True-ep-800 RMSE Train: 14041.103056751981 (Error Ratio: 1.1457869213470218)
+2023-11-29 14:14:48: INFO: TF-Tanh-hl-1-do-True-ep-800 RMSE Test: 13319.490195071436 (Error Ratio: 1.1508794195960796)
+2023-11-29 14:14:48: INFO: ------------------------------------
+2023-11-29 14:14:59: INFO: TF-Tanh-hl-1-do-False-ep-100 Accuracy Train: 0.8981
+2023-11-29 14:14:59: INFO: TF-Tanh-hl-1-do-False-ep-100 Accuracy Test: 0.8901
+2023-11-29 14:14:59: INFO: TF-Tanh-hl-1-do-False-ep-100 AUC Train: 0.916
+2023-11-29 14:14:59: INFO: TF-Tanh-hl-1-do-False-ep-100 AUC Test: 0.895
+2023-11-29 14:15:06: INFO: ------------------------------------
+2023-11-29 14:15:23: INFO: TF-Tanh-hl-1-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:15:23: INFO: TF-Tanh-hl-1-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:15:23: INFO: TF-Tanh-hl-1-do-False-ep-800 RMSE Train: 14038.800912155863 (Error Ratio: 1.1455990609518218)
+2023-11-29 14:15:23: INFO: TF-Tanh-hl-1-do-False-ep-800 RMSE Test: 13317.203525853794 (Error Ratio: 1.1506818384196633)
+2023-11-29 14:15:23: INFO: ------------------------------------
+2023-11-29 14:15:34: INFO: TF-Tanh-hl-2-do-True-ep-100 Accuracy Train: 0.8939
+2023-11-29 14:15:34: INFO: TF-Tanh-hl-2-do-True-ep-100 Accuracy Test: 0.8867
+2023-11-29 14:15:35: INFO: TF-Tanh-hl-2-do-True-ep-100 AUC Train: 0.917
+2023-11-29 14:15:35: INFO: TF-Tanh-hl-2-do-True-ep-100 AUC Test: 0.896
+2023-11-29 14:15:42: INFO: ------------------------------------
+2023-11-29 14:16:01: INFO: TF-Tanh-hl-2-do-True-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:16:01: INFO: TF-Tanh-hl-2-do-True-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:16:01: INFO: TF-Tanh-hl-2-do-True-ep-800 RMSE Train: 14042.59528720374 (Error Ratio: 1.1459086908496277)
+2023-11-29 14:16:01: INFO: TF-Tanh-hl-2-do-True-ep-800 RMSE Test: 13320.972403420226 (Error Ratio: 1.1510074907954417)
+2023-11-29 14:16:01: INFO: ------------------------------------
+2023-11-29 14:16:12: INFO: TF-Tanh-hl-2-do-False-ep-100 Accuracy Train: 0.9069
+2023-11-29 14:16:12: INFO: TF-Tanh-hl-2-do-False-ep-100 Accuracy Test: 0.9010
+2023-11-29 14:16:12: INFO: TF-Tanh-hl-2-do-False-ep-100 AUC Train: 0.931
+2023-11-29 14:16:12: INFO: TF-Tanh-hl-2-do-False-ep-100 AUC Test: 0.902
+2023-11-29 14:16:19: INFO: ------------------------------------
+2023-11-29 14:16:37: INFO: TF-Tanh-hl-2-do-False-ep-800 MEAN Train: 12254.549947423764
+2023-11-29 14:16:37: INFO: TF-Tanh-hl-2-do-False-ep-800 MEAN Test: 11573.31512605042
+2023-11-29 14:16:37: INFO: TF-Tanh-hl-2-do-False-ep-800 RMSE Train: 14042.440288554999 (Error Ratio: 1.1458960425965783)
+2023-11-29 14:16:37: INFO: TF-Tanh-hl-2-do-False-ep-800 RMSE Test: 13320.818445575622 (Error Ratio: 1.15099418796536)
+2023-11-29 14:16:37: INFO: ------------------------------------
+2023-11-29 14:17:02: INFO: Execution time: 0:08:10.843724
