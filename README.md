@@ -19,29 +19,68 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-<!-- ## Setup Instructions for various scripts
-
-1. [EDA](TODO)
-2. [Tree Models](TODO)
-3. [Linear Models](TODO)
-4. [Model Comparison](TODO) -->
-
-
 ## Table of Contents
-1. [Abstract](#abstract)
 
-2. [Data Preparation and EDA](#data-preparation-and-eda)
+1. [Code Instructions](#code-instructions)
 
-3. [Comparing Tree Models](#comparing-tree-models)
+2. [Abstract](#abstract)
 
-4. [Comparing Linear Models](#comparing-linear-models)
+3. [Data Preparation and EDA](#data-preparation-and-eda)
 
-5. [Comparing Neural Networks and All Models](#comparing-neural-networks-and-all-models)
+4. [Comparing Tree Models](#comparing-tree-models)
 
-5. [Conclusion and future works](#conclusion-and-future-works)
+5. [Comparing Linear Models](#comparing-linear-models)
+
+6. [Comparing Neural Networks and All Models](#comparing-neural-networks-and-all-models)
+
+7. [Conclusion and future works](#conclusion-and-future-works)
 
 - [Built with](#built-with)
 - [Author](#author)
+
+## Code Instructions
+
+- [Configuration file](src/config.py) for models hyperparameters and variable selection.
+
+1. [EDA](scripts/1-eda.py) - Script for EDA.
+
+```
+python scripts/1-eda.py
+```
+
+2. [Tree Models](scripts/2-tree-models.py) - Script for comparing tree models.
+
+```
+python scripts/2-tree-models.py
+```
+
+Option for using grid search on [config](src/config.py#32) file.
+
+```
+UseGridSearch = False # Grid search will NOT used.
+UseGridSearch = True # Grid search will be used.
+```
+
+3. [Linear Models](scripts/3-linear-models.py) - Script for comparing linear models with also step wise selection method.
+
+```
+python scripts/3-linear-models.py
+```
+
+4. [Model Comparison](scripts/4-model-comparison.py) - Script for comparing all models including linear/logistic regression, decision tree, random forest, gradient boosting, and neural networks (tensorflow) with various variable selection methods.
+
+```
+python scripts/3-linear-models.py
+```
+
+Option for using grid search on [config](src/config.py#55) file.
+
+```
+variable_selection_model = None # Use all variables
+variable_selection_model = "DT" # Use DT variable selection method
+variable_selection_model = "RF" # Use RF variable selection method
+variable_selection_model = "GB" # Use GB variable selection method
+```
 
 ## Abstract
 
