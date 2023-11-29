@@ -35,7 +35,6 @@ gast==0.4.0
 google-auth==2.22.0
 google-auth-oauthlib==1.0.0
 google-pasta==0.2.0
-graphviz==0.20.1
 grpcio==1.56.2
 h5py==3.9.0
 identify==2.5.24

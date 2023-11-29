@@ -9,7 +9,6 @@ from sklearn.ensemble import (
     GradientBoostingClassifier,
 )
 from sklearn import tree
-import graphviz
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from src.functions import (
@@ -192,19 +191,6 @@ def main():
                     save_img_path=viz_file_path,
                 )
                 logger.info(f"Saved viz file to: {viz_file_path}")
-                # graphviz_data = tree.export_graphviz(
-                #     decision_tree=model_new,
-                #     out_file=None,
-                #     filled=True,
-                #     rounded=True,
-                #     feature_names=feature_cols,
-                #     class_names=["Good", "Bad"],
-                #     impurity=False,
-                #     precision=0,
-                # )
-                # graph = graphviz.Source(graphviz_data, format="png")
-                # graph.render(filename=viz_file_name, directory=viz_path, cleanup=True)
-                # logger.info(f"Saved viz file to: {viz_path + '/' + viz_file_name}")
 
     # ---------- Compare ROC Curves ----------
     roc_df = pd.concat([d for d in roc_results.values()])
