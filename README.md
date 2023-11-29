@@ -92,17 +92,17 @@ This repository provides a concise overview of working with the [HMEQ dataset](h
 
 ### Data Preparation
 
-In the data preparation phase, we have performed the following key steps:
+In the data preparation phase, I have performed the following key steps:
 
 1. **Handling Missing Values:**
-   - For the reason for loan (REASON) and current job (JOB) columns, we imputed missing values as "Unknown" to ensure data integrity.
-   - For missing numerical values in other columns, we applied imputation by replacing them with the median value of their respective columns. To keep track of imputed values, a flag variable was created.
+   - For the reason for loan (REASON) and current job (JOB) columns, I imputed missing values as "Unknown" to ensure data integrity.
+   - For missing numerical values in other columns, I applied imputation by replacing them with the median value of their respective columns. To keep track of imputed values, a flag variable was created.
 
 2. **Creating Dummy Variables:**
-   - To facilitate modeling with categorical variables, we generated dummy variables for categorical columns. This transformation allows us to use these variables effectively in machine learning models.
+   - To facilitate modeling with categorical variables, I generated dummy variables for categorical columns. This transformation allows us to use these variables effectively in machine learning models.
 
 3. **Capping Loss Amounts:**
-   - Observing outliers in the loss amount (TARGET_LOSS_AMT) column, we capped the loss values at $25,000. This step helps mitigate the influence of extreme values on our models and analysis.
+   - Observing outliers in the loss amount (TARGET_LOSS_AMT) column, I capped the loss values at $25,000. This step helps mitigate the influence of extreme values on our models and analysis.
 
 4. **Default and Loss Statistics:**
    - Out of the 5,960 loans in the dataset, 20% experienced defaults.
@@ -120,14 +120,14 @@ Although sample sizes are small, self-workers and salespeople have high risks. S
 | Expected loss value in USD | Observation count |
 ---
 
-Delinquencies on credit reports (DELINQ) had the highest positive correlation to defaulting at 35%, and credit line age (CLAGE) had the highest negative correlation at -17%. These two are modest correlations at best, so looking into the data further would be essential. Also, we have an imbalance in the number of observations for each job since we have many “Other” and very few “Sales” and “Self.”
+Delinquencies on credit reports (DELINQ) had the highest positive correlation to defaulting at 35%, and credit line age (CLAGE) had the highest negative correlation at -17%. These two are modest correlations at best, so looking into the data further would be essential. Also, there is an imbalance in the number of observations for each job since we have many “Other” and very few “Sales” and “Self.”
 
 ![numcols distribution](img/1-eda/distribution_num_variables.png)
 
 ---
 
 ## Comparing Tree Models
-We've compared three tree-based; models, Decision Trees (DT), Random Forests (RF), and Gradient Boosting (GB), to predict 1) the probability of a loan default and 2) the loss amount when the loan defaults. The parameters shown here are results using default parameters. The Grid Search results have slightly better results and can be observed in the [log file](logs/2-tree-models-GS-Params-2023-09-21_00:34.log) and the [img](img/2-tree-models/GS-Params) folder.
+I've compared three tree-based; models, Decision Trees (DT), Random Forests (RF), and Gradient Boosting (GB), to predict 1) the probability of a loan default and 2) the loss amount when the loan defaults. The parameters shown here are results using default parameters. The Grid Search results have slightly better results and can be observed in the [log file](logs/2-tree-models-GS-Params-2023-09-21_00:34.log) and the [img](img/2-tree-models/GS-Params) folder.
 
 ### Important Features
 The debt-to-income ratio was the feature that appeared frequently in predicting the default for all models, and the loan amount was the most important for predicting the loss amount on the loan. These findings make sense because a high debt-to-income ratio will increase the likelihood of not paying the bills, and the higher the loan, the higher the possibility of having a high loss amount.
@@ -150,12 +150,8 @@ Decision trees help us understand how the model processes data and predict predi
 |:---:|
 | Loss Amount Graph |
 
-<!-- | ![default graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Categorical_Default-Params_viz-1.png) | ![loss graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Regression_Default-Params_viz-1.png) |
-|:---:|:---:|
-| Default Risk Graphn | Loss Amount Graph | -->
-
 ### Tree Model Results
-For each model, I compared the area under the curve (AUC) for predicting default risk and root mean square error (RMSE) for predicting the loss amount. Table 1 shows the results. In terms of performance, we observe that Gradient Boosting outperformed the rest for both predictions.
+For each model, I compared the area under the curve (AUC) for predicting default risk and root mean square error (RMSE) for predicting the loss amount. Table below shows the results. In terms of performance, we observe that Gradient Boosting outperformed the rest for both predictions.
 
 | Model | Default Risk AUC Score | RMSE Test (Mean Loss Amount = $11,573) |
 |:---:|:---:|:---:|
@@ -212,7 +208,7 @@ The coefficients created using the Decision Tree variables are shown below.
 | Modified flag variable for debt to income ratio | 2.84 | Number of credit lines | 221.59 |
 | Debt to income ratio | 0.09 | - | - |
 
-The coefficients in these two functions make sense because all variables are considered potential risk factors when giving out loans. The modified flag variable for debt to income ratio (DEBTINC) in the logistic regression would require some context. This flag variable was created as an indicator when I replaced the missing values for DEBTINC with the median value based on the profession and loan reason. It was interesting to see this variable as an important feature, and it makes sense too because the user may not want to provide their DEBTINC because it probably wasn’t a desirable one.
+The coefficients in these two functions make sense because all variables are considered potential risk factors when giving out loans. The modified flag variable for debt to income ratio (DEBTINC) in the logistic regression would require some context. This flag variable was created as an indicator when the missing values for DEBTINC were replaced with the median value based on the profession and loan reason. It was interesting to see this variable as an important feature, and it makes sense too because the user may not want to provide their DEBTINC because it probably wasn’t a desirable one.
 
 ---
 
