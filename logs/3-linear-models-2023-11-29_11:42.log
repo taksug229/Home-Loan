@@ -1,0 +1,350 @@
+2023-11-29 11:42:19: INFO: Total NaN values in each row.
+2023-11-29 11:42:19: INFO: NOTE: I am not imputing TARGET_LOSS_AMT because this is only NaN when the person did not default.
+2023-11-29 11:42:19: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+MORTDUE             518
+VALUE               112
+REASON              252
+JOB                 279
+YOJ                 515
+DEROG               708
+DELINQ              580
+CLAGE               308
+NINQ                510
+CLNO                222
+DEBTINC            1267
+2023-11-29 11:42:19: INFO: Median of each numerical column grouped by job and reason of loan. I will impute NaNs with these values.
+2023-11-29 11:42:19: INFO: 
+                 TARGET_BAD_FLAG  TARGET_LOSS_AMT     LOAN     MORTDUE     VALUE    YOJ  DEROG  DELINQ       CLAGE  NINQ  CLNO    DEBTINC
+REASON  JOB                                                                                                                              
+DebtCon Mgr                  0.0          14360.0  19450.0   76600.000   99025.5   8.00    0.0     0.0  175.570979   1.0  23.0  36.290354
+        Office               0.0          13453.0  17900.0   63744.000   90810.5   5.00    0.0     0.0  167.657981   1.0  22.0  36.099281
+        Other                0.0          12124.0  18000.0   54653.000   77519.0   8.00    0.0     0.0  152.202235   1.0  19.0  35.730559
+        ProfExe              0.0          15237.0  18500.0   83149.500  113083.5   8.00    0.0     0.0  190.800000   1.0  25.0  33.591086
+        Sales                0.0          16656.0  15200.0   74392.500   87446.5   4.00    0.0     0.0  141.268671   0.0  23.0  35.033102
+        Self                 0.0          19324.0  23400.0  101250.000  125252.0   5.00    0.0     0.0  178.951539   1.0  24.0  34.554127
+        NaN                  0.0          14756.0  11100.0   59701.500   80037.0   5.00    0.0     0.0  129.896035   1.0  16.0  31.626822
+HomeImp Mgr                  0.0           6533.5  13250.0   74013.000  102377.5   8.00    0.0     0.0  162.637297   0.0  21.0  33.200548
+        Office               0.0           5817.0  12000.0   62200.000   80147.0  10.00    0.0     0.0  175.082704   0.0  17.5  35.949877
+        Other                0.0           4572.0  10800.0   53812.500   73319.0   7.00    0.0     0.0  168.666667   0.0  15.0  34.485533
+        ProfExe              0.0           6934.0  14900.0   82889.500  107442.5   7.00    0.0     0.0  177.854846   0.0  22.0  32.870335
+        Sales                0.0           3870.0   5500.0   70793.000   70735.0   4.00    1.0     0.0  156.625882   0.0  23.0  40.442569
+        Self                 0.0          17239.0  24000.0   78943.500  167020.0   7.00    0.0     0.0  192.226177   1.0  21.0  35.871959
+        NaN                  0.0          12251.5  21900.0   85337.000  100147.0   8.00    0.0     0.0  142.147140   0.0  13.0  31.203189
+NaN     Mgr                  0.0          14283.0  20000.0  111000.000  168708.0  13.00    0.0     4.0  249.242763   1.0  27.0  32.698229
+        Office               0.0              NaN  15500.0   25751.000   44461.0   2.00    0.0     0.0  211.033333   0.0  16.0  37.816428
+        Other                0.0          11471.0  16100.0   67371.305   95085.0  12.00    0.0     0.0  246.918710   0.0  19.0  31.183363
+        ProfExe              0.0          10107.5  18500.0   62772.000   90031.0   6.50    0.0     0.0  108.136393   1.0  17.5  27.740432
+        Self                 1.0          28095.0  27700.0   61396.000  111627.0   5.00    0.0     1.0  101.466667   1.0  28.0  84.613889
+        NaN                  0.0           5312.0  13300.0   47811.000   72583.0   0.95    0.0     0.0  118.976063   0.0   0.0  23.988913
+2023-11-29 11:42:19: INFO: Impute missing values START.
+2023-11-29 11:42:19: INFO: Impute missing categorical values to 'Unknwon'.
+2023-11-29 11:42:19: INFO: Add new column for flag and imputed numbers.
+2023-11-29 11:42:19: INFO: The NaNs will be imputed by the median of per Job and Reason.
+2023-11-29 11:42:19: INFO: The original imputed columns will be deleted.
+2023-11-29 11:42:19: INFO: Impute missing values END.
+2023-11-29 11:42:19: INFO: First 5 observations of the imputed data
+2023-11-29 11:42:19: INFO: 
+                         0           1           2       3          4
+TARGET_BAD_FLAG          1           1           1       1          0
+TARGET_LOSS_AMT      641.0      1109.0       767.0  1425.0        NaN
+LOAN                  1100        1300        1500    1500       1700
+MORTDUE            25860.0     70053.0     13500.0     NaN    97800.0
+VALUE              39025.0     68400.0     16700.0     NaN   112000.0
+REASON             HomeImp     HomeImp     HomeImp     NaN    HomeImp
+JOB                  Other       Other       Other     NaN     Office
+YOJ                   10.5         7.0         4.0     NaN        3.0
+DEROG                  0.0         0.0         0.0     NaN        0.0
+DELINQ                 0.0         2.0         0.0     NaN        0.0
+CLAGE            94.366667  121.833333  149.466667     NaN  93.333333
+NINQ                   1.0         0.0         1.0     NaN        0.0
+CLNO                   9.0        14.0        10.0     NaN       14.0
+DEBTINC                NaN         NaN         NaN     NaN        NaN
+2023-11-29 11:42:19: INFO: Confirming there are no NaNs (except the intentionally left TARGET_LOSS_AMT.)
+2023-11-29 11:42:19: INFO: 
+TARGET_BAD_FLAG       0
+TARGET_LOSS_AMT    4771
+LOAN                  0
+REASON                0
+JOB                   0
+M_MORTDUE             0
+IMP_MORTDUE           0
+M_VALUE               0
+IMP_VALUE             0
+M_YOJ                 0
+IMP_YOJ               0
+M_DEROG               0
+IMP_DEROG             0
+M_DELINQ              0
+IMP_DELINQ            0
+M_CLAGE               0
+IMP_CLAGE             0
+M_NINQ                0
+IMP_NINQ              0
+M_CLNO                0
+IMP_CLNO              0
+M_DEBTINC             0
+IMP_DEBTINC           0
+2023-11-29 11:42:19: INFO: Creating dummy variables for categorical columns
+2023-11-29 11:42:19: INFO: Completed creating dummy variables
+2023-11-29 11:42:19: INFO: First 5 observations of the data with dummy variables
+2023-11-29 11:42:19: INFO: 
+   TARGET_BAD_FLAG  TARGET_LOSS_AMT  LOAN  M_MORTDUE  IMP_MORTDUE  M_VALUE  IMP_VALUE  M_YOJ  IMP_YOJ  M_DEROG  IMP_DEROG  M_DELINQ  IMP_DELINQ  M_CLAGE   IMP_CLAGE  M_NINQ  IMP_NINQ  M_CLNO  IMP_CLNO  M_DEBTINC  IMP_DEBTINC  z_REASON_DebtCon  z_REASON_HomeImp  z_JOB_Mgr  z_JOB_Office  z_JOB_Other  z_JOB_ProfExe  z_JOB_Sales  z_JOB_Self
+0                1            641.0  1100          0      25860.0        0    39025.0      0    10.50        0        0.0         0         0.0        0   94.366667       0       1.0       0       9.0          1    34.485533                 0                 1          0             0            1              0            0           0
+1                1           1109.0  1300          0      70053.0        0    68400.0      0     7.00        0        0.0         0         2.0        0  121.833333       0       0.0       0      14.0          1    34.485533                 0                 1          0             0            1              0            0           0
+2                1            767.0  1500          0      13500.0        0    16700.0      0     4.00        0        0.0         0         0.0        0  149.466667       0       1.0       0      10.0          1    34.485533                 0                 1          0             0            1              0            0           0
+3                1           1425.0  1500          1      47811.0        1    72583.0      1     0.95        1        0.0         1         0.0        1  118.976063       1       0.0       1       0.0          1    23.988913                 0                 0          0             0            0              0            0           0
+4                0              NaN  1700          0      97800.0        0   112000.0      0     3.00        0        0.0         0         0.0        0   93.333333       0       0.0       0      14.0          1    35.949877                 0                 1          0             1            0              0            0           0
+2023-11-29 11:42:19: INFO: LOSS AMOUNT statistics BEFORE capping
+2023-11-29 11:42:19: INFO: 
+count     1189.000000
+mean     13414.576955
+std      10839.455965
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      78987.000000
+2023-11-29 11:42:19: INFO: LOSS AMOUNT statistics AFTER capping
+2023-11-29 11:42:19: INFO: 
+count     1189.000000
+mean     12118.188394
+std       7574.544843
+min        224.000000
+25%       5639.000000
+50%      11003.000000
+75%      17634.000000
+max      25000.000000
+2023-11-29 11:42:19: INFO: Data Split
+2023-11-29 11:42:19: INFO: FLAG DATA
+2023-11-29 11:42:19: INFO: TRAINING = (4768, 27)
+2023-11-29 11:42:19: INFO: TEST = (1192, 27)
+2023-11-29 11:42:19: INFO: LOSS AMOUNT DATA
+2023-11-29 11:42:19: INFO: TRAINING = (951,)
+2023-11-29 11:42:19: INFO: TEST = (238,)
+2023-11-29 11:42:19: INFO: 
+count      951.000000
+mean     12254.549947
+std       7625.029926
+min        224.000000
+25%       5781.000000
+50%      11122.000000
+75%      18082.000000
+max      25000.000000
+2023-11-29 11:42:19: INFO: 
+count      238.000000
+mean     11573.315126
+std       7359.835410
+min        320.000000
+25%       5025.500000
+50%      10390.000000
+75%      16489.500000
+max      25000.000000
+2023-11-29 11:42:19: INFO: All Categorical
+2023-11-29 11:42:19: INFO: Using Features from All.
+2023-11-29 11:42:19: INFO: All variables Accuracy Train: 0.8131
+2023-11-29 11:42:19: INFO: All variables  Accuracy Test:: 0.8054
+2023-11-29 11:42:19: INFO: All variables AUC Train: 0.709
+2023-11-29 11:42:19: INFO: All variables AUC Test: 0.702
+2023-11-29 11:42:19: INFO: All AUC Train Cross Validation Average: 0.67
+2023-11-29 11:42:19: INFO: Total Variables: 27 
+2023-11-29 11:42:19: INFO: INTERCEPT = -0.01044102579768488
+2023-11-29 11:42:19: INFO: LOAN = -2.115799947441848e-05
+2023-11-29 11:42:19: INFO: M_MORTDUE = -0.0009736176335840384
+2023-11-29 11:42:19: INFO: IMP_MORTDUE = -8.947364593621111e-06
+2023-11-29 11:42:19: INFO: M_VALUE = 0.01230092633696483
+2023-11-29 11:42:19: INFO: IMP_VALUE = 3.1157312930124675e-06
+2023-11-29 11:42:19: INFO: M_YOJ = -0.006192869647297348
+2023-11-29 11:42:19: INFO: IMP_YOJ = -0.07921328759549467
+2023-11-29 11:42:19: INFO: M_DEROG = -0.010991817247750465
+2023-11-29 11:42:19: INFO: IMP_DEROG = 0.07569384442315921
+2023-11-29 11:42:19: INFO: M_DELINQ = -0.00906443304591711
+2023-11-29 11:42:19: INFO: IMP_DELINQ = 0.13392872084240726
+2023-11-29 11:42:19: INFO: M_CLAGE = 0.001207599830627394
+2023-11-29 11:42:19: INFO: IMP_CLAGE = -0.006407361780544821
+2023-11-29 11:42:19: INFO: M_NINQ = -0.006504220430192572
+2023-11-29 11:42:19: INFO: IMP_NINQ = 0.07840761391065004
+2023-11-29 11:42:19: INFO: M_CLNO = -0.00045683779512472635
+2023-11-29 11:42:19: INFO: IMP_CLNO = 0.01706748046613105
+2023-11-29 11:42:19: INFO: M_DEBTINC = 0.07479257383492455
+2023-11-29 11:42:19: INFO: IMP_DEBTINC = 0.013064802879382924
+2023-11-29 11:42:19: INFO: z_REASON_DebtCon = -0.009919893563161496
+2023-11-29 11:42:19: INFO: z_REASON_HomeImp = 0.00041738144362631486
+2023-11-29 11:42:19: INFO: z_JOB_Mgr = 0.003253348884475151
+2023-11-29 11:42:19: INFO: z_JOB_Office = -0.010669923624939435
+2023-11-29 11:42:19: INFO: z_JOB_Other = 0.0021190863933693645
+2023-11-29 11:42:19: INFO: z_JOB_ProfExe = -0.0032968218443271725
+2023-11-29 11:42:19: INFO: z_JOB_Sales = 0.0020607886177681713
+2023-11-29 11:42:19: INFO: z_JOB_Self = 0.003058497064358755
+2023-11-29 11:42:32: INFO: ------------------------------------
+2023-11-29 11:42:32: INFO: All Regression
+2023-11-29 11:42:32: INFO: Using Features from All.
+2023-11-29 11:42:32: INFO: All MEAN Train: 12254.549947423764
+2023-11-29 11:42:32: INFO: All MEAN Test: 11573.31512605042
+2023-11-29 11:42:32: INFO: All RMSE Train: 3226.3207938145374 (Error Ratio: 0.26327533917251666)
+2023-11-29 11:42:32: INFO: All RMSE Test: 3361.822490144411 (Error Ratio: 0.2904805108587488)
+2023-11-29 11:42:32: INFO: All RMSE Train Cross Validation Average: 3383.84 (Error Ratio: 0.2761291336213094)
+2023-11-29 11:42:32: INFO: Total Variables: 27 
+2023-11-29 11:42:32: INFO: INTERCEPT = -1131.4954923215373
+2023-11-29 11:42:32: INFO: LOAN = 0.4495114292709439
+2023-11-29 11:42:32: INFO: M_MORTDUE = -931.3376715268364
+2023-11-29 11:42:32: INFO: IMP_MORTDUE = 0.008893587484124055
+2023-11-29 11:42:32: INFO: M_VALUE = 376.21550816621954
+2023-11-29 11:42:32: INFO: IMP_VALUE = -0.004541960075698626
+2023-11-29 11:42:32: INFO: M_YOJ = 237.03533636847126
+2023-11-29 11:42:32: INFO: IMP_YOJ = -75.8852310443904
+2023-11-29 11:42:32: INFO: M_DEROG = -279.08779275601347
+2023-11-29 11:42:32: INFO: IMP_DEROG = 349.51512325520196
+2023-11-29 11:42:32: INFO: M_DELINQ = 1182.0573692035439
+2023-11-29 11:42:32: INFO: IMP_DELINQ = 580.8707669181058
+2023-11-29 11:42:32: INFO: M_CLAGE = -3942.9290478401335
+2023-11-29 11:42:32: INFO: IMP_CLAGE = -13.850473957645672
+2023-11-29 11:42:32: INFO: M_NINQ = 111.3525628795382
+2023-11-29 11:42:32: INFO: IMP_NINQ = 1.7351252401698236
+2023-11-29 11:42:32: INFO: M_CLNO = 5040.74036720286
+2023-11-29 11:42:32: INFO: IMP_CLNO = 173.18488496908657
+2023-11-29 11:42:32: INFO: M_DEBTINC = 3972.453636459091
+2023-11-29 11:42:32: INFO: IMP_DEBTINC = 93.37618578582119
+2023-11-29 11:42:32: INFO: z_REASON_DebtCon = 1603.538667948293
+2023-11-29 11:42:32: INFO: z_REASON_HomeImp = -1116.0686889877563
+2023-11-29 11:42:32: INFO: z_JOB_Mgr = -3006.9987889372987
+2023-11-29 11:42:32: INFO: z_JOB_Office = -3007.6451566081346
+2023-11-29 11:42:32: INFO: z_JOB_Other = -3216.8193403792416
+2023-11-29 11:42:32: INFO: z_JOB_ProfExe = -3021.5075408301304
+2023-11-29 11:42:32: INFO: z_JOB_Sales = -1461.7322144268564
+2023-11-29 11:42:32: INFO: z_JOB_Self = -2789.6904236002474
+2023-11-29 11:42:32: INFO: ------------------------------------
+2023-11-29 11:42:32: INFO: Decision Tree Categorical
+2023-11-29 11:42:32: INFO: Important Variables from Decision Tree: Index(['IMP_DELINQ', 'M_DEBTINC', 'IMP_DEBTINC'], dtype='object')
+2023-11-29 11:42:32: INFO: Using Features from Decision Tree.
+2023-11-29 11:42:32: INFO: Decision Tree variables Accuracy Train: 0.8618
+2023-11-29 11:42:32: INFO: Decision Tree variables  Accuracy Test:: 0.8591
+2023-11-29 11:42:32: INFO: Decision Tree variables AUC Train: 0.865
+2023-11-29 11:42:32: INFO: Decision Tree variables AUC Test: 0.837
+2023-11-29 11:42:32: INFO: Decision Tree AUC Train Cross Validation Average: 0.86
+2023-11-29 11:42:32: INFO: Total Variables: 3 
+2023-11-29 11:42:32: INFO: INTERCEPT = -5.945387522194773
+2023-11-29 11:42:32: INFO: IMP_DELINQ = 0.671096738535665
+2023-11-29 11:42:32: INFO: M_DEBTINC = 2.8450444486251016
+2023-11-29 11:42:32: INFO: IMP_DEBTINC = 0.09045792340458154
+2023-11-29 11:42:38: INFO: ------------------------------------
+2023-11-29 11:42:38: INFO: Decision Tree Regression
+2023-11-29 11:42:38: INFO: Important Variables from Decision Tree: Index(['LOAN', 'IMP_CLNO'], dtype='object')
+2023-11-29 11:42:38: INFO: Using Features from Decision Tree.
+2023-11-29 11:42:38: INFO: Decision Tree MEAN Train: 12254.549947423764
+2023-11-29 11:42:38: INFO: Decision Tree MEAN Test: 11573.31512605042
+2023-11-29 11:42:38: INFO: Decision Tree RMSE Train: 4440.018726327955 (Error Ratio: 0.36231593533643935)
+2023-11-29 11:42:38: INFO: Decision Tree RMSE Test: 4457.386917923586 (Error Ratio: 0.3851434847643988)
+2023-11-29 11:42:38: INFO: Decision Tree RMSE Train Cross Validation Average: 4454.75 (Error Ratio: 0.3635183211725422)
+2023-11-29 11:42:38: INFO: Total Variables: 2 
+2023-11-29 11:42:38: INFO: INTERCEPT = 8.680956818740015
+2023-11-29 11:42:38: INFO: LOAN = 0.4420235752527028
+2023-11-29 11:42:38: INFO: IMP_CLNO = 221.59298400898007
+2023-11-29 11:42:38: INFO: ------------------------------------
+2023-11-29 11:42:38: INFO: Random Forest Categorical
+2023-11-29 11:42:38: INFO: Important Variables from Random Forest: Index(['M_VALUE', 'IMP_DEROG', 'IMP_DELINQ', 'M_DEBTINC', 'IMP_DEBTINC'], dtype='object')
+2023-11-29 11:42:38: INFO: Using Features from Random Forest.
+2023-11-29 11:42:38: INFO: Random Forest variables Accuracy Train: 0.8800
+2023-11-29 11:42:38: INFO: Random Forest variables  Accuracy Test:: 0.8683
+2023-11-29 11:42:38: INFO: Random Forest variables AUC Train: 0.884
+2023-11-29 11:42:38: INFO: Random Forest variables AUC Test: 0.853
+2023-11-29 11:42:38: INFO: Random Forest AUC Train Cross Validation Average: 0.88
+2023-11-29 11:42:38: INFO: Total Variables: 5 
+2023-11-29 11:42:38: INFO: INTERCEPT = -6.379613937171675
+2023-11-29 11:42:38: INFO: M_VALUE = 3.5870771831473336
+2023-11-29 11:42:38: INFO: IMP_DEROG = 0.6141970335700973
+2023-11-29 11:42:38: INFO: IMP_DELINQ = 0.6055283554217622
+2023-11-29 11:42:38: INFO: M_DEBTINC = 2.7781947761018664
+2023-11-29 11:42:38: INFO: IMP_DEBTINC = 0.09744037991354497
+2023-11-29 11:42:44: INFO: ------------------------------------
+2023-11-29 11:42:44: INFO: Random Forest Regression
+2023-11-29 11:42:44: INFO: Important Variables from Random Forest: Index(['LOAN', 'IMP_CLNO', 'IMP_DEBTINC'], dtype='object')
+2023-11-29 11:42:44: INFO: Using Features from Random Forest.
+2023-11-29 11:42:44: INFO: Random Forest MEAN Train: 12254.549947423764
+2023-11-29 11:42:44: INFO: Random Forest MEAN Test: 11573.31512605042
+2023-11-29 11:42:44: INFO: Random Forest RMSE Train: 4380.278049227848 (Error Ratio: 0.35744095605475096)
+2023-11-29 11:42:44: INFO: Random Forest RMSE Test: 4440.648348760642 (Error Ratio: 0.38369717754985944)
+2023-11-29 11:42:44: INFO: Random Forest RMSE Train Cross Validation Average: 4401.02 (Error Ratio: 0.3591339317625056)
+2023-11-29 11:42:44: INFO: Total Variables: 3 
+2023-11-29 11:42:44: INFO: INTERCEPT = -2326.9358522020502
+2023-11-29 11:42:44: INFO: LOAN = 0.4389002828211483
+2023-11-29 11:42:44: INFO: IMP_CLNO = 214.74040715191873
+2023-11-29 11:42:44: INFO: IMP_DEBTINC = 69.79232480761307
+2023-11-29 11:42:44: INFO: ------------------------------------
+2023-11-29 11:42:44: INFO: Gradient Boosting Categorical
+2023-11-29 11:42:45: INFO: Important Variables from Gradient Boosting: Index(['IMP_DELINQ', 'IMP_CLAGE', 'M_DEBTINC', 'IMP_DEBTINC'], dtype='object')
+2023-11-29 11:42:45: INFO: Using Features from Gradient Boosting.
+2023-11-29 11:42:45: INFO: Gradient Boosting variables Accuracy Train: 0.8719
+2023-11-29 11:42:45: INFO: Gradient Boosting variables  Accuracy Test:: 0.8725
+2023-11-29 11:42:45: INFO: Gradient Boosting variables AUC Train: 0.882
+2023-11-29 11:42:45: INFO: Gradient Boosting variables AUC Test: 0.856
+2023-11-29 11:42:45: INFO: Gradient Boosting AUC Train Cross Validation Average: 0.88
+2023-11-29 11:42:45: INFO: Total Variables: 4 
+2023-11-29 11:42:45: INFO: INTERCEPT = -4.820901894286643
+2023-11-29 11:42:45: INFO: IMP_DELINQ = 0.7193155598114389
+2023-11-29 11:42:45: INFO: IMP_CLAGE = -0.006478145363673038
+2023-11-29 11:42:45: INFO: M_DEBTINC = 2.819473292642127
+2023-11-29 11:42:45: INFO: IMP_DEBTINC = 0.08879862140277775
+2023-11-29 11:42:53: INFO: ------------------------------------
+2023-11-29 11:42:53: INFO: Gradient Boosting Regression
+2023-11-29 11:42:54: INFO: Important Variables from Gradient Boosting: Index(['LOAN', 'IMP_CLNO', 'M_DEBTINC', 'IMP_DEBTINC'], dtype='object')
+2023-11-29 11:42:54: INFO: Using Features from Gradient Boosting.
+2023-11-29 11:42:54: INFO: Gradient Boosting MEAN Train: 12254.549947423764
+2023-11-29 11:42:54: INFO: Gradient Boosting MEAN Test: 11573.31512605042
+2023-11-29 11:42:54: INFO: Gradient Boosting RMSE Train: 3953.4178366198194 (Error Ratio: 0.32260816215865473)
+2023-11-29 11:42:54: INFO: Gradient Boosting RMSE Test: 3948.0554767757103 (Error Ratio: 0.34113436243423606)
+2023-11-29 11:42:54: INFO: Gradient Boosting RMSE Train Cross Validation Average: 3977.16 (Error Ratio: 0.324545210110739)
+2023-11-29 11:42:54: INFO: Total Variables: 4 
+2023-11-29 11:42:54: INFO: INTERCEPT = -6530.916690916232
+2023-11-29 11:42:54: INFO: LOAN = 0.45453666273067256
+2023-11-29 11:42:54: INFO: IMP_CLNO = 213.6417444434377
+2023-11-29 11:42:54: INFO: M_DEBTINC = 4083.9166469039446
+2023-11-29 11:42:54: INFO: IMP_DEBTINC = 104.31507617179398
+2023-11-29 11:42:54: INFO: ------------------------------------
+2023-11-29 11:42:54: INFO: Step Wise Categorical
+2023-11-29 11:43:11: INFO: Categorical best score: 0.9030614744764567 
+2023-11-29 11:43:11: INFO: Important Variables from Step Wise: ['M_VALUE', 'M_YOJ', 'M_DEROG', 'IMP_DEROG', 'IMP_DELINQ', 'M_CLAGE', 'IMP_CLAGE', 'M_DEBTINC', 'IMP_DEBTINC', 'z_JOB_Office']
+2023-11-29 11:43:11: INFO: Using Features from Step Wise.
+2023-11-29 11:43:11: INFO: Step Wise variables Accuracy Train: 0.8899
+2023-11-29 11:43:11: INFO: Step Wise variables  Accuracy Test:: 0.8893
+2023-11-29 11:43:11: INFO: Step Wise variables AUC Train: 0.904
+2023-11-29 11:43:11: INFO: Step Wise variables AUC Test: 0.879
+2023-11-29 11:43:11: INFO: Step Wise AUC Train Cross Validation Average: 0.90
+2023-11-29 11:43:11: INFO: Total Variables: 10 
+2023-11-29 11:43:11: INFO: INTERCEPT = -5.803467732226505
+2023-11-29 11:43:11: INFO: M_VALUE = 2.888150408490689
+2023-11-29 11:43:11: INFO: M_YOJ = -0.8343311710043675
+2023-11-29 11:43:11: INFO: M_DEROG = -1.3007670880413467
+2023-11-29 11:43:11: INFO: IMP_DEROG = 0.5617018174996667
+2023-11-29 11:43:11: INFO: IMP_DELINQ = 0.7556654251458916
+2023-11-29 11:43:11: INFO: M_CLAGE = 1.9860299072996248
+2023-11-29 11:43:11: INFO: IMP_CLAGE = -0.00588623255191074
+2023-11-29 11:43:11: INFO: M_DEBTINC = 2.726466327542897
+2023-11-29 11:43:11: INFO: IMP_DEBTINC = 0.11279008610515925
+2023-11-29 11:43:11: INFO: z_JOB_Office = -0.7144729428095029
+2023-11-29 11:43:19: INFO: ------------------------------------
+2023-11-29 11:43:19: INFO: Step Wise Regression
+2023-11-29 11:43:21: INFO: Regression best score: -3437.236847682042 
+2023-11-29 11:43:21: INFO: Important Variables from Step Wise: ['LOAN', 'IMP_YOJ', 'IMP_DEROG', 'M_DELINQ', 'IMP_DELINQ', 'IMP_CLAGE', 'IMP_CLNO', 'M_DEBTINC', 'IMP_DEBTINC', 'z_REASON_HomeImp']
+2023-11-29 11:43:21: INFO: Using Features from Step Wise.
+2023-11-29 11:43:21: INFO: Step Wise MEAN Train: 12254.549947423764
+2023-11-29 11:43:21: INFO: Step Wise MEAN Test: 11573.31512605042
+2023-11-29 11:43:21: INFO: Step Wise RMSE Train: 3335.078387254227 (Error Ratio: 0.27215021372166753)
+2023-11-29 11:43:21: INFO: Step Wise RMSE Test: 3316.2691651085793 (Error Ratio: 0.2865444454756076)
+2023-11-29 11:43:21: INFO: Step Wise RMSE Train Cross Validation Average: 3437.24 (Error Ratio: 0.28048658354888356)
+2023-11-29 11:43:21: INFO: Total Variables: 10 
+2023-11-29 11:43:21: INFO: INTERCEPT = -2512.173155701221
+2023-11-29 11:43:21: INFO: LOAN = 0.4469956605584182
+2023-11-29 11:43:21: INFO: IMP_YOJ = -86.70577184669855
+2023-11-29 11:43:21: INFO: IMP_DEROG = 350.01501781646743
+2023-11-29 11:43:21: INFO: M_DELINQ = 2113.954697273032
+2023-11-29 11:43:21: INFO: IMP_DELINQ = 578.7961620082442
+2023-11-29 11:43:21: INFO: IMP_CLAGE = -14.355312988268821
+2023-11-29 11:43:21: INFO: IMP_CLNO = 192.15573634374886
+2023-11-29 11:43:21: INFO: M_DEBTINC = 3926.2053608192978
+2023-11-29 11:43:21: INFO: IMP_DEBTINC = 88.64510489683587
+2023-11-29 11:43:21: INFO: z_REASON_HomeImp = -2759.3973473801657
+2023-11-29 11:43:21: INFO: ------------------------------------
+2023-11-29 11:43:30: INFO: Execution time: 0:01:10.944369

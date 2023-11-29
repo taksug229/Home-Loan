@@ -134,7 +134,7 @@ I’ve applied logistic and linear regression models to the HMEQ data by using d
 ### Logistic Regression
 The stepwise selection method had the best results for the logistic regression (default risk) model. However, the stepwise selection method used 10 variables compared to 3 to 5 variables selected from tree-based models with similar results.
 
-![roc-linear](img/3-linear-models/ROC-Comparison--rs1-cv5-md3-ft0.05-mv10.png)
+![roc-linear](img/3-linear-models/ROC-Comparison--rs1-cv5-md5-ft0.05-mv10.png)
 
 | Variables Selection | Variable # |
 |:---:|:---:|
@@ -150,28 +150,28 @@ For the linear regression (loss amount) model, the stepwise selection method als
 | Variable Selection | Variable # | RMSE Train (Error Rate): Mean Loss Amount = $12,255 | RMSE Test (Error Rate): Mean Loss Amount = $11,573 |
 |:---:|:---:|:---:|:---:|
 | All | 27 | $3,226 (26.3%) | $3,362 (29.0%) |
-| Decision Tree | 3 | $4,380 (35.7%) | $4,441 (38.4%) |
-| Random Forest | 1 | $5,122 (41.8%) | $5,147 (44.5%) |
-| Gradient Boosting | 3 | $4,094 (33.4%) | $4,022 (34.8%) |
+| Decision Tree | 2 | $4,440 (36.2%) | $4,457 (38.5%) |
+| Random Forest | 3 | $4,380 (35.8%) | $4,441 (38.4%) |
+| Gradient Boosting | 4 | $3,953 (32.3%) | $3,948 (34.1%) |
 | Stepwise Selection | 10 | $3,335 (27.2%) | $3,316 (28.7%) |
 
 ### Stepwise Selection Results
 The stepwise process for selecting variables are shown below. The logistic and linear regression scoring methods are ROCAUC and negative root mean square, respectively. The performance starts to plateau for both models somewhere between the 4th and 8th variables. With the visualization, we can imply that the logistic regression model can perform well with a few variables. Still, the linear regression model may require more variables.
 
-| ![default stepwise](img/3-linear-models/Categorical-Stepwise-rs1-md3-ft0.05-mv10.png) | ![loss stepwise](img/3-linear-models/Regression-Stepwise-rs1-md3-ft0.05-mv10.png) |
+| ![default stepwise](img/3-linear-models/Categorical-Stepwise-rs1-md5-ft0.05-mv10.png) | ![loss stepwise](img/3-linear-models/Regression-Stepwise-rs1-md5-ft0.05-mv10.png) |
 |:---:|:---:|
 | Default Risk Stepwise Selection | Loss Amount Selection Selection |
 
 ### Coefficient Analysis
-The coefficients created using the Decision Tree variables are shown below. Each model have 3 variables.
+The coefficients created using the Decision Tree variables are shown below.
 
 | Logistic Regression (Default risk) |  | Linear Regression (Loss amount) | |
 |:----------------:|:----------------:|:---------------------:|:----------------:|
 | Variable | Coefficient | Variable | Coefficient |
-| Intercept | -5.95 | Intercept | -2,326.94 |
+| Intercept | -5.95 | Intercept | 8.68 |
 | Delinquencies | 0.67 | Loan amount | 0.44 |
-| Modified flag variable for debt to income ratio | 2.84 | Number of credit lines | 214.74 |
-| Debt to income ratio | 0.09 | Debt to income ratio | 69.79 |
+| Modified flag variable for debt to income ratio | 2.84 | Number of credit lines | 221.59 |
+| Debt to income ratio | 0.09 | - | - |
 
 The coefficients in these two functions make sense because all variables are considered potential risk factors when giving out loans. The modified flag variable for debt to income ratio (DEBTINC) in the logistic regression would require some context. This flag variable was created as an indicator when I replaced the missing values for DEBTINC with the median value based on the profession and loan reason. It was interesting to see this variable as an important feature, and it makes sense too because the user may not want to provide their DEBTINC because it probably wasn’t a desirable one.
 
