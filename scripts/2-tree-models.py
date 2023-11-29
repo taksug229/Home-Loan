@@ -18,6 +18,7 @@ from src.functions import (
     process_model,
     plot_roc,
     plot_importance,
+    plot_decision_tree,
 )
 from src.config import (
     TARGET_F,
@@ -39,7 +40,7 @@ base_file_name = os.path.splitext(os.path.basename(__file__))[0]
 path = os.path.abspath(os.path.join(current_dir, os.pardir))
 log_path = path + f"/logs/"
 img_path = path + f"/img/{base_file_name}/{title_params}/"
-viz_path = img_path + f"/viz/{title_params}/"
+viz_path = img_path + f"/viz/"
 os.makedirs(log_path, exist_ok=True)
 os.makedirs(img_path, exist_ok=True)
 os.makedirs(viz_path, exist_ok=True)
@@ -181,22 +182,29 @@ def main():
 
             if name == "Decision Tree":
                 feature_cols = list(X_train.columns.values)
-                viz_file_name = (
-                    f"Decition_Tree_{model_type}_{title_params}_viz-{random_state}"
+                viz_file_path = (
+                    viz_path
+                    + f"Decition_Tree_{model_type}_{title_params}_viz-{random_state}"
                 )
-                graphviz_data = tree.export_graphviz(
-                    decision_tree=model_new,
-                    out_file=None,
-                    filled=True,
-                    rounded=True,
+                plot_decision_tree(
+                    model=model_new,
                     feature_names=feature_cols,
-                    class_names=["Good", "Bad"],
-                    impurity=False,
-                    precision=0,
+                    save_img_path=viz_file_path,
                 )
-                graph = graphviz.Source(graphviz_data, format="png")
-                graph.render(filename=viz_file_name, directory=viz_path, cleanup=True)
-                logger.info(f"Saved viz file to: {viz_path + '/' + viz_file_name}")
+                logger.info(f"Saved viz file to: {viz_file_path}")
+                # graphviz_data = tree.export_graphviz(
+                #     decision_tree=model_new,
+                #     out_file=None,
+                #     filled=True,
+                #     rounded=True,
+                #     feature_names=feature_cols,
+                #     class_names=["Good", "Bad"],
+                #     impurity=False,
+                #     precision=0,
+                # )
+                # graph = graphviz.Source(graphviz_data, format="png")
+                # graph.render(filename=viz_file_name, directory=viz_path, cleanup=True)
+                # logger.info(f"Saved viz file to: {viz_path + '/' + viz_file_name}")
 
     # ---------- Compare ROC Curves ----------
     roc_df = pd.concat([d for d in roc_results.values()])

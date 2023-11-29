@@ -29,7 +29,7 @@ feature_thresh = 0.05  # Feature importance threshold for tree models.
 max_step_wise_vars = 10  # Max step wise variables.
 
 # -------- Grid Search Parameters for Tree Models --------
-UseGridSearch = False  # If True, Grid search parameters will be used. If False, Default Parameters will be used.
+UseGridSearch = True  # If True, Grid search parameters will be used. If False, Default Parameters will be used.
 
 grid_search_dic = {
     "Decision Tree": {"max_depth": [3, 5], "min_samples_leaf": [1, 2]},

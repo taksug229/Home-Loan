@@ -102,18 +102,27 @@ The debt-to-income ratio was the feature that appeared frequently in predicting 
 ### Decision Tree Results
 Decision trees help us understand how the model processes data and predict predictions. The debt-to-income ratio and the loan amount are at the top of the decision tree (root node) for predicting default and loss amounts. Features in the root node indicate that these features play a crucial role in splitting the groups to make a prediction.
 
-| ![default graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Categorical_Default-Params_viz-1.png) | ![loss graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Regression_Default-Params_viz-1.png) |
+| ![default graph](img/2-tree-models/Default-Params/viz/Decition_Tree_Categorical_Default-Params_viz-1.png) |
+|:---:|
+| Default Risk Graph |
+
+
+![loss graph](img/2-tree-models/Default-Params/viz/Decition_Tree_Regression_Default-Params_viz-1.png) |
+|:---:|
+| Loss Amount Graph |
+
+<!-- | ![default graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Categorical_Default-Params_viz-1.png) | ![loss graph](img/2-tree-models/Default-Params/viz/Default-Params/Decition_Tree_Regression_Default-Params_viz-1.png) |
 |:---:|:---:|
-| Default Risk Graphn | Loss Amount Graph |
+| Default Risk Graphn | Loss Amount Graph | -->
 
 ### Tree Model Results
 For each model, I compared the area under the curve (AUC) for predicting default risk and root mean square error (RMSE) for predicting the loss amount. Table 1 shows the results. In terms of performance, we observe that Gradient Boosting outperformed the rest for both predictions.
 
 | Model | Default Risk AUC Score | RMSE Test (Mean Loss Amount = $11,573) |
 |:---:|:---:|:---:|
-| Decision Tree | 0.82 | $4,545 |
-| Random Forest | 0.89| $3,875 |
-| Gradient Boosting | 0.94 | $1,931 |
+| Decision Tree | 0.830 | $3,365 |
+| Random Forest | 0.911| $2,894 |
+| Gradient Boosting | **0.943** | **$1,611** |
 
 ![roc-trees](img/2-tree-models/Default-Params/ROC-Comparison-Default-Params-1.png)
 

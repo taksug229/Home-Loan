@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import logging
 from mlxtend.plotting import plot_sequential_feature_selection as plot_sfs
+from sklearn import tree
 from sklearn.base import BaseEstimator
 from sklearn.utils._testing import ignore_warnings
 from sklearn.exceptions import ConvergenceWarning
@@ -294,8 +295,7 @@ def process_model(
             logger.info(f"{model_name} LOSS AMOUNT best parameters = {best_params}")
     else:
         logger.info(f"Using Default Parameters for {model_name}.")
-        # model.set_params(**{"max_depth": max_depth, "random_state": random_state}) #TODO
-        model.set_params(**{"random_state": random_state})
+        model.set_params(**{"max_depth": max_depth, "random_state": random_state})
     model_ = model.fit(X_train, Y_train)
     Y_Pred_train = model_.predict(X_train)
     Y_Pred_test = model_.predict(X_test)
@@ -737,3 +737,16 @@ def plot_importance(
     ax.set(title=title)
     if save_img_path:
         fig.savefig(save_img_path, bbox_inches="tight")
+
+
+def plot_decision_tree(
+    model: BaseEstimator,
+    feature_names: list,
+    save_img_path: str = None,
+    figsize: tuple = (30, 8),  # (150, 12)
+) -> None:
+    fig, ax = plt.subplots(figsize=figsize)
+    tree.plot_tree(model, feature_names=feature_names, filled=True, ax=ax, rounded=True)
+    if save_img_path:
+        fig.savefig(save_img_path, bbox_inches="tight")
+        # plt.close(fig)
