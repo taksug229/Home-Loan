@@ -204,6 +204,13 @@ The summary of the RMSE for the loss amount is in the table below. The error rat
 ---
 
 ## Conclusion and future works
+Throughout this project, I explored how different variable selection models, including DT, RF, GB, Stepwise selection, and the inclusion of all variables, impacted the results of our predictive models. The diverse set of models provided valuable insights into the data's behavior and the predictive performance of each algorithm.
+
+Both LR and DT offer high interpretability, making them particularly advantageous when interpretability is crucial and performance differences are minimal. For classification tasks, RF demonstrated commendable performance, while GB excelled in regression models.
+
+In terms of practical implementation, I recommend using the LR model with Stepwise variable selection for default risk prediction and the DT model with GB variables for loss amount prediction. These models stood out for their simplicity, involving only 9-10 variables, reliable performance, ease of interpretation, and swift implementation across various programming languages.
+
+For future works, I intend to explore ensemble techniques, such as stacking or bagging, to leverage the diverse strengths of LR, DT, RF, and GB. This exploration will be complemented by an in-depth hyperparameter tuning analysis for Random Forests and Gradient Boosting models to uncover potential performance gains. Additionally, I plan to delve into advanced feature engineering techniques, creating new features or transforming existing ones to capture underlying data patterns more effectively.
 
 ---
 
